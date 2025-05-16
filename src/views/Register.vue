@@ -10,21 +10,21 @@
           @seleccionar-tipo="manejarSeleccionTipoUsuario"
         />
 
-        <!-- PASOS PARA PERSONA -->
+        <!-- PASOS PARA Persona -->
         <PersonaPaso2DatosBasicos
-          v-if="tipoUsuario === 'persona' && pasoActual === 2"
+          v-if="tipoUsuario === 'Persona' && pasoActual === 2"
           v-model="datosPersona"
           @siguiente="siguientePaso"
           @anterior="pasoActual--"
         />
         <PersonaPaso3Tecnologias
-          v-if="tipoUsuario === 'persona' && pasoActual === 3"
+          v-if="tipoUsuario === 'Persona' && pasoActual === 3"
           v-model="datosPersona"
           @siguiente="siguientePaso"
           @anterior="pasoActual--"
         />
         <PersonaPaso4Contacto
-          v-if="tipoUsuario === 'persona' && pasoActual === 4"
+          v-if="tipoUsuario === 'Persona' && pasoActual === 4"
           v-model="datosPersona"
           @enviar="registrarPersona"
           @anterior="pasoActual--"
@@ -32,21 +32,27 @@
 
         <!-- PASOS PARA EMPRESA -->
         <EmpresaPaso2DatosEmpresa
-          v-if="tipoUsuario === 'empresa' && pasoActual === 2"
+          v-if="tipoUsuario === 'Empresa' && pasoActual === 2"
           v-model="datosEmpresa"
           @siguiente="siguientePaso"
+          @anterior="pasoActual--"
         />
         <EmpresaPaso3Descripcion
-          v-if="tipoUsuario === 'empresa' && pasoActual === 3"
+          v-if="tipoUsuario === 'Empresa' && pasoActual === 3"
           v-model="datosEmpresa"
           @siguiente="siguientePaso"
+          @anterior="pasoActual--"
         />
         <EmpresaPaso4Contacto
-          v-if="tipoUsuario === 'empresa' && pasoActual === 4"
+          v-if="tipoUsuario === 'Empresa' && pasoActual === 4"
           v-model="datosEmpresa"
           @enviar="registrarEmpresa"
           @anterior="pasoActual--"
         />
+        <p class="mt-3 text-center">
+          ¿Ya tienes una cuenta?
+          <router-link to="/login">Inicia sesión</router-link>
+        </p>
       </div>
       <div class="accordion" id="accordionExample">
         <div class="accordion-item">
@@ -68,8 +74,8 @@
             data-bs-parent="#accordionExample"
           >
             <div class="accordion-body">
-              <pre v-if="tipoUsuario === 'persona'">{{ datosPersona }}</pre>
-              <pre v-if="tipoUsuario === 'empresa'">{{ datosEmpresa }}</pre>
+              <pre v-if="tipoUsuario === 'Persona'">{{ datosPersona }}</pre>
+              <pre v-if="tipoUsuario === 'Empresa'">{{ datosEmpresa }}</pre>
             </div>
           </div>
         </div>
@@ -95,7 +101,7 @@ import EmpresaPaso4Contacto from "../components/Registro/EmpresaPaso4Contacto.vu
 const pasoActual = ref(1);
 const tipoUsuario = ref("");
 
-// Datos de persona
+// Datos de Persona
 const datosPersona = reactive({
   tipoUsuario: "",
   nombres: "",
@@ -108,7 +114,7 @@ const datosPersona = reactive({
   descripcion: "",
   tecnologias: [],
   habilidades: [],
-  recursos: [], // PC, Internet
+  recursos: [],
   preferenciasTrabajo: [],
   hojaDeVida: null,
   whatsapp: "",
@@ -116,11 +122,11 @@ const datosPersona = reactive({
   contrasena: "",
 });
 
-// Datos de empresa
+// Datos de Empresa
 const datosEmpresa = reactive({
   tipoUsuario: "",
   tipoEmpresa: "",
-  nombre: "",
+  nombreEmpresa: "",
   nit: "",
   ciudad: "",
   pais: "",
@@ -135,15 +141,15 @@ const datosEmpresa = reactive({
   contrasena: "",
 });
 
-// Funciones
-const manejarSeleccionTipoUsuario = (tipo) => {
+const manejarSeleccionTipoUsuario = ({ tipo, tipoEmpresa }) => {
   tipoUsuario.value = tipo;
   pasoActual.value = 2;
 
-  if (tipo === "persona") {
+  if (tipo === "Persona") {
     datosPersona.tipoUsuario = tipo;
-  } else if (tipo === "empresa") {
+  } else if (tipo === "Empresa") {
     datosEmpresa.tipoUsuario = tipo;
+    datosEmpresa.tipoEmpresa = tipoEmpresa || "";
   }
 };
 
@@ -152,11 +158,11 @@ const siguientePaso = () => {
 };
 
 const registrarPersona = () => {
-  console.log("Registrar persona", datosPersona);
+  console.log("Registrar Persona", datosPersona);
 };
 
 const registrarEmpresa = () => {
-  console.log("Registrar empresa", datosEmpresa);
+  console.log("Registrar Empresa", datosEmpresa);
 };
 </script>
 
@@ -178,5 +184,15 @@ const registrarEmpresa = () => {
 
 .card-body-register {
   padding: 2rem;
+}
+
+.text-center a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
 }
 </style>
