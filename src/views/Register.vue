@@ -82,10 +82,15 @@
       </div>
     </div>
   </div>
+  <!-- Alertas -->
+  <Alertas ref="alertasRef" />
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { registrarUsuario } from "../services/authServices";
+import Alertas from "../components/Alertas/Alertas.vue";
 import Paso1TipoUsuario from "../components/Registro/Paso1TipoUsuario.vue";
 import PersonaPaso2DatosBasicos from "../components/Registro/PersonaPaso2DatosBasicos.vue";
 import PersonaPaso3Tecnologias from "../components/Registro/PersonaPaso3Tecnologias.vue";
@@ -93,11 +98,11 @@ import PersonaPaso4Contacto from "../components/Registro/PersonaPaso4Contacto.vu
 import EmpresaPaso2DatosEmpresa from "../components/Registro/EmpresaPaso2DatosEmpresa.vue";
 import EmpresaPaso3Descripcion from "../components/Registro/EmpresaPaso3Descripcion.vue";
 import EmpresaPaso4Contacto from "../components/Registro/EmpresaPaso4Contacto.vue";
-import { registrarUsuario } from "../services/authServices";
 
-// Control de pasos
+const router = useRouter();
 const pasoActual = ref(1);
 const tipoUsuario = ref("");
+const alertasRef = ref(null);
 
 // Datos de Persona
 const datosPersona = reactive({
@@ -158,10 +163,14 @@ const siguientePaso = () => {
 const registrarPersona = async () => {
   try {
     const datos = { ...datosPersona };
-    console.log("Datos registrados: ", datos);
-
     await registrarUsuario(datos.correo, datos.contrasena, "Persona", datos);
-    console.log("Registro de persona exitoso");
+    alertasRef.value?.mostrarToast?.(
+      "success",
+      "Registro exitoso",
+      "Ahora puedes iniciar sesión",
+      "toast-success"
+    );
+    router.push("/login");
   } catch (error) {
     console.error("Error al registrar persona:", error);
   }
