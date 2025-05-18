@@ -4,7 +4,14 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth, db } from "../firebase/config";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  collectionGroup,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 // Función iniciar sesión
 export const iniciarSesion = async (email, password) => {
@@ -82,4 +89,15 @@ const mapFirebaseError = (code) => {
     default:
       return "Ocurrió un error inesperado. Intenta nuevamente.";
   }
+};
+
+//Funcion verificar numero de documento
+export const verificarDocumentoUnico = async (numeroDocumento) => {
+  const q = query(
+    collectionGroup(db, "Persona"),
+    where("numeroDocumento", "==", numeroDocumento)
+  );
+
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty; // true si ya existe, false si es único
 };

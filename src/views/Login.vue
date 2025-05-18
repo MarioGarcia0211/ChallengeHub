@@ -58,7 +58,7 @@ const login = async () => {
     console.log("Usuario autenticado:", usuario);
     router.push("/inicio");
   } catch (error) {
-    alertasRef.value?.mostrarError?.("Correo o contraseña incorrectos.");
+    alertasRef.value?.mostrarToast?.("error", error, "", "toast-error");
     console.error(error);
   }
 };

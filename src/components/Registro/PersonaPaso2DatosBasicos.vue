@@ -112,13 +112,19 @@
       </button>
     </div>
   </div>
+
+  <!-- Alertas -->
+  <Alertas ref="alertasRef" />
 </template>
 
 <script setup>
 import { computed, reactive } from "vue";
+import { verificarDocumentoUnico } from "../../services/authServices";
+import Alertas from "../Alertas/Alertas.vue";
 
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue", "siguiente"]);
+const alertasRef = ref(null);
 
 const form = computed({
   get: () => props.modelValue,
@@ -155,9 +161,15 @@ function validarYContinuar() {
   validarCampo("numeroDocumento", form.value.numeroDocumento);
   validarCampo("ciudad", form.value.ciudad);
 
-  if (formularioValido.value) {
-    emit("siguiente");
+  if (formularioValido.value) return;
+
+  const existe = verificarDocumentoUnico(form.value.numeroDocumento);
+  if (existe) {
+    errores.numeroDocumento = "Este número de documento ya está registrado.";
+    return;
   }
+
+  emit("siguiente");
 }
 
 const formularioValido = computed(() => {
