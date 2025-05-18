@@ -123,13 +123,18 @@
       </button>
     </div>
   </div>
+  <!-- Alertas -->
+  <Alertas ref="alertasRef" />
 </template>
 
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
+import { verificarNitUnico } from "../../services/authServices";
+import Alertas from "../Alertas/Alertas.vue";
 
 const props = defineProps(["modelValue"]);
-const emit = defineEmits(["update:modelValue", "siguiente"]);
+const emit = defineEmits(["update:modelValue", "siguiente", "anterior"]);
+const alertasRef = ref(null);
 
 const form = computed({
   get: () => props.modelValue,
@@ -159,14 +164,23 @@ function limpiarError(campo) {
   errores[campo] = "";
 }
 
-function validarYContinuar() {
+async function validarYContinuar() {
   validarCampo("nombreEmpresa", form.value.nombreEmpresa);
   validarCampo("nit", form.value.nit);
   validarCampo("ciudad", form.value.ciudad);
 
-  if (formularioValido.value) {
-    emit("siguiente");
+  if (!formularioValido.value) return;
+
+  const existe = await verificarNitUnico(form.value.nit);
+  console.log(existe);
+
+  if (existe) {
+    errores.nit = "Este Nit o Rut ya está registrado.";
+    alertasRef.value?.mostrarToast?.("error", errores.nit, "", "toast-error");
+    return;
   }
+
+  emit("siguiente");
 }
 
 const formularioValido = computed(() => {

@@ -92,7 +92,7 @@ const mapFirebaseError = (code) => {
   }
 };
 
-//Funcion verificar numero de documento
+// Funcion verificar numero de documento
 export const verificarDocumentoUnico = async (numeroDocumento) => {
   const q = query(
     collectionGroup(db, "Persona"),
@@ -100,11 +100,20 @@ export const verificarDocumentoUnico = async (numeroDocumento) => {
   );
 
   const querySnapshot = await getDocs(q);
-  return !querySnapshot.empty; // true si ya existe, false si es único
+  return !querySnapshot.empty;
 };
 
+// Funcion verificar correo
 export const verificarCorreoUnico = async (correo) => {
   const q = query(collection(db, "usuarios"), where("correo", "==", correo));
   const snapshot = await getDocs(q);
-  return !snapshot.empty; // true si ya existe, false sino
+  return !snapshot.empty;
+};
+
+// Funcion verificar nit
+export const verificarNitUnico = async (nit) => {
+  const q = query(collectionGroup(db, "Empresa"), where("nit", "==", nit));
+
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
 };
