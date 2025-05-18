@@ -181,7 +181,13 @@ const registrarEmpresa = async () => {
     const datos = { ...datosEmpresa };
 
     await registrarUsuario(datos.correo, datos.contrasena, "Empresa", datos);
-    console.log("Registro de empresa exitoso");
+    alertasRef.value?.mostrarToast?.(
+      "success",
+      "Registro exitoso",
+      "Ahora puedes iniciar sesión",
+      "toast-success"
+    );
+    router.push("/login");
   } catch (error) {
     console.error("Error al registrar empresa:", error);
   }
