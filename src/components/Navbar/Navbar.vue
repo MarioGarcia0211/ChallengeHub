@@ -3,13 +3,45 @@
     <div
       class="container-fluid d-flex justify-content-between align-items-center"
     >
-      <a class="navbar-brand mb-0 h1 titulo-navbar" href="/">ChallengeHub</a>
+      <router-link class="navbar-brand mb-0 h1 titulo-navbar" to="/inicio">
+        ChallengeHub
+      </router-link>
+
+      <div v-if="usuario">
+        <span class="me-3 fw-bold">{{ usuario.email }}</span>
+        <button class="btn btn-outline-danger btn-sm" @click="cerrarSesion">
+          Cerrar sesión
+        </button>
+      </div>
     </div>
   </nav>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
+const usuario = ref(null);
+const router = useRouter();
+const auth = getAuth();
+
+// Detectar usuario autenticado
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    usuario.value = user;
+  });
+});
+
+// Cerrar sesión
+const cerrarSesion = async () => {
+  try {
+    await signOut(auth);
+    router.push("/login");
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+  }
+};
 </script>
 
 <style scoped>
