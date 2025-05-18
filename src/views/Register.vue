@@ -86,16 +86,14 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-
-// Importar componentes de pasos
 import Paso1TipoUsuario from "../components/Registro/Paso1TipoUsuario.vue";
 import PersonaPaso2DatosBasicos from "../components/Registro/PersonaPaso2DatosBasicos.vue";
 import PersonaPaso3Tecnologias from "../components/Registro/PersonaPaso3Tecnologias.vue";
 import PersonaPaso4Contacto from "../components/Registro/PersonaPaso4Contacto.vue";
-
 import EmpresaPaso2DatosEmpresa from "../components/Registro/EmpresaPaso2DatosEmpresa.vue";
 import EmpresaPaso3Descripcion from "../components/Registro/EmpresaPaso3Descripcion.vue";
 import EmpresaPaso4Contacto from "../components/Registro/EmpresaPaso4Contacto.vue";
+import {registrarUsuario} from "../services/authServices"
 
 // Control de pasos
 const pasoActual = ref(1);
@@ -108,7 +106,7 @@ const datosPersona = reactive({
   apellidos: "",
   tipoDocumento: "",
   numeroDocumento: "",
-  fotoPerfil: null,
+  fotoPerfil: "",
   ciudad: "",
   pais: "",
   descripcion: "",
@@ -116,7 +114,7 @@ const datosPersona = reactive({
   habilidades: [],
   recursos: [],
   preferenciasTrabajo: [],
-  hojaDeVida: null,
+  hojaDeVida: "",
   whatsapp: "",
   correo: "",
   contrasena: "",
@@ -132,7 +130,7 @@ const datosEmpresa = reactive({
   pais: "",
   industria: "",
   otraIndustria: "",
-  logo: null,
+  logo: "",
   paginaWeb: "",
   descripcion: "",
   contacto: "",
@@ -157,12 +155,28 @@ const siguientePaso = () => {
   pasoActual.value++;
 };
 
-const registrarPersona = () => {
-  console.log("Registrar Persona", datosPersona);
+const registrarPersona = async () => {
+  try {
+    const datos = { ...datosPersona };
+    console.log("Datos registrados: ", datos);
+
+    await registrarUsuario(datos.correo, datos.contrasena, "Persona", datos);
+    console.log("Registro de persona exitoso");
+    
+  } catch (error) {
+    console.error("Error al registrar persona:", error);
+  }
 };
 
-const registrarEmpresa = () => {
-  console.log("Registrar Empresa", datosEmpresa);
+const registrarEmpresa = async () => {
+  try {
+    const datos = { ...datosEmpresa };
+
+    await registrarUsuario(datos.correo, datos.contrasena, "Empresa", datos);
+    console.log("Registro de empresa exitoso");
+  } catch (error) {
+    console.error("Error al registrar empresa:", error);
+  }
 };
 </script>
 

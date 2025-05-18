@@ -93,7 +93,8 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, onMounted } from 'vue'
+import Dropdown from 'bootstrap/js/dist/dropdown'
 
 const confirmarContrasena = ref("")
 const props = defineProps(['modelValue'])
@@ -102,6 +103,11 @@ const emit = defineEmits(['update:modelValue', 'enviar', 'anterior'])
 const form = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val)
+})
+
+onMounted(() => {
+  const dropdowns = document.querySelectorAll('[data-bs-toggle="dropdown"]')
+  dropdowns.forEach(el => new Dropdown(el))
 })
 
 const preferenciasTrabajoDisponibles = [
