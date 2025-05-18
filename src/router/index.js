@@ -6,7 +6,7 @@ import Inicio from "../views/Inicio.vue";
 const routes = [
   { path: "/login", name: "login", component: Login },
   { path: "/register", name: "", component: Register },
-  {path: "/inicio", name: "", component: Inicio}
+  { path: "/inicio", name: "", component: Inicio },
 ];
 
 const router = createRouter({

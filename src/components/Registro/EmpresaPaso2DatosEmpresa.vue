@@ -5,17 +5,31 @@
       <!-- Nombre de la empresa -->
       <div class="col-md-6 mb-3">
         <label for="nombreEmpresa" class="form-label">Empresa</label>
-        <input id="nombreEmpresa" type="text" class="form-control" :class="{ 'is-invalid': errores.nombreEmpresa }"
-          v-model="form.nombreEmpresa" placeholder="Nombre de la organización"
-          @blur="validarCampo('nombreEmpresa', form.nombreEmpresa)" @input="limpiarError('nombreEmpresa')" />
+        <input
+          id="nombreEmpresa"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.nombreEmpresa }"
+          v-model="form.nombreEmpresa"
+          placeholder="Nombre de la organización"
+          @blur="validarCampo('nombreEmpresa', form.nombreEmpresa)"
+          @input="limpiarError('nombreEmpresa')"
+        />
       </div>
 
       <!-- Nit o Rut -->
       <div class="col-md-6 mb-3">
         <label for="nit" class="form-label">Nit o Rut</label>
-        <input id="nit" type="text" class="form-control" :class="{ 'is-invalid': errores.nit }" v-model="form.nit"
-          placeholder="Escribe el Nit o Rut sin código de verificación" @blur="validarCampo('nit', form.nit)"
-          @input="limpiarError('nit')" />
+        <input
+          id="nit"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.nit }"
+          v-model="form.nit"
+          placeholder="Escribe el Nit o Rut sin código de verificación"
+          @blur="validarCampo('nit', form.nit)"
+          @input="limpiarError('nit')"
+        />
       </div>
 
       <!-- País -->
@@ -32,14 +46,26 @@
       <!-- Ciudad -->
       <div class="col-md-6 mb-3">
         <label for="ciudad" class="form-label">Ciudad</label>
-        <input id="ciudad" type="text" class="form-control" :class="{ 'is-invalid': errores.ciudad }"
-          v-model="form.ciudad" @blur="validarCampo('ciudad', form.ciudad)" @input="limpiarError('ciudad')" />
+        <input
+          id="ciudad"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.ciudad }"
+          v-model="form.ciudad"
+          @blur="validarCampo('ciudad', form.ciudad)"
+          @input="limpiarError('ciudad')"
+        />
       </div>
 
       <!-- Logo -->
       <div class="col-md-12 mb-3">
         <label for="logo" class="form-label">Logo de la empresa</label>
-        <input id="logo" type="file" class="form-control" @change="handleFileChange" />
+        <input
+          id="logo"
+          type="file"
+          class="form-control"
+          @change="handleFileChange"
+        />
       </div>
 
       <!-- Industria -->
@@ -47,7 +73,11 @@
         <label for="industria" class="form-label">Industria</label>
         <select id="industria" class="form-select" v-model="form.industria">
           <option value="" disabled>Seleccione una industria</option>
-          <option v-for="industria in industrias" :key="industria" :value="industria">
+          <option
+            v-for="industria in industrias"
+            :key="industria"
+            :value="industria"
+          >
             {{ industria }}
           </option>
         </select>
@@ -55,22 +85,40 @@
 
       <!-- Otra industria -->
       <div v-if="form.industria === 'Otros'" class="col-md-6 mb-3">
-        <label for="otraIndustria" class="form-label">Especifique otra industria</label>
-        <input id="otraIndustria" type="text" class="form-control" v-model="form.otraIndustria" />
+        <label for="otraIndustria" class="form-label"
+          >Especifique otra industria</label
+        >
+        <input
+          id="otraIndustria"
+          type="text"
+          class="form-control"
+          v-model="form.otraIndustria"
+        />
       </div>
 
       <!-- Página web -->
       <div class="col-md-6 mb-3">
         <label for="paginaWeb" class="form-label">Página web</label>
-        <input id="paginaWeb" type="url" class="form-control" placeholder="https://" v-model="form.paginaWeb" />
+        <input
+          id="paginaWeb"
+          type="url"
+          class="form-control"
+          placeholder="https://"
+          v-model="form.paginaWeb"
+        />
       </div>
     </div>
 
+    <!-- Botones -->
     <div class="d-flex justify-content-between mt-4">
       <button class="btn btn-secondary" @click="$emit('anterior')">
         Atrás
       </button>
-      <button class="btn btn-primary" @click="validarYContinuar" :disabled="!formularioValido">
+      <button
+        class="btn btn-primary"
+        @click="validarYContinuar"
+        :disabled="!formularioValido"
+      >
         Siguiente
       </button>
     </div>

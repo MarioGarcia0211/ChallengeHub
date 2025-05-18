@@ -4,31 +4,50 @@
     <div class="row align-items-center">
       <!-- Descripción de la empresa -->
       <div class="col-md-12 mb-3">
-        <label for="descripcion" class="form-label">Descripción de la Organización</label>
-        <textarea id="descripcion" class="form-control" :class="{ 'is-invalid': errores.descripcion }"
-          v-model="form.descripcion" rows="3" @input="errores.descripcion = ''"
-          @blur="validarCampo('descripcion', form.descripcion)"></textarea>
+        <label for="descripcion" class="form-label"
+          >Descripción de la Organización</label
+        >
+        <textarea
+          id="descripcion"
+          class="form-control"
+          :class="{ 'is-invalid': errores.descripcion }"
+          v-model="form.descripcion"
+          rows="3"
+          @input="errores.descripcion = ''"
+          @blur="validarCampo('descripcion', form.descripcion)"
+        ></textarea>
       </div>
 
       <!-- Nombre del contacto -->
       <div class="col-md-6 mb-3">
         <label for="contacto" class="form-label">Nombre del contacto</label>
-        <input id="contacto" type="text" class="form-control" :class="{ 'is-invalid': errores.contacto }"
-          v-model="form.contacto" @input="errores.contacto = ''" @blur="validarCampo('contacto', form.contacto)" />
+        <input
+          id="contacto"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.contacto }"
+          v-model="form.contacto"
+          @input="errores.contacto = ''"
+          @blur="validarCampo('contacto', form.contacto)"
+        />
       </div>
     </div>
 
+    <!-- Botones -->
     <div class="d-flex justify-content-between">
       <button class="btn btn-secondary" @click="$emit('anterior')">
         Atrás
       </button>
-      <button class="btn btn-primary" @click="validarYContinuar" :disabled="!formularioValido">
+      <button
+        class="btn btn-primary"
+        @click="validarYContinuar"
+        :disabled="!formularioValido"
+      >
         Siguiente
       </button>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { reactive, computed } from "vue";
@@ -52,8 +71,7 @@ function validarCampo(nombre, valor) {
 
 const formularioValido = computed(() => {
   return (
-    form.value.descripcion.trim() !== "" &&
-    form.value.contacto.trim() !== ""
+    form.value.descripcion.trim() !== "" && form.value.contacto.trim() !== ""
   );
 });
 

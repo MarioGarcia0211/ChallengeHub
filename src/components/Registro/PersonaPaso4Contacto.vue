@@ -6,11 +6,22 @@
       <div class="col-md-12 mb-3">
         <label class="form-label">¿Qué recursos tienes?</label>
         <div class="row">
-          <div class="col-md-12 col-sm-6" v-for="recurso in recursosDisponibles" :key="recurso">
+          <div
+            class="col-md-12 col-sm-6"
+            v-for="recurso in recursosDisponibles"
+            :key="recurso"
+          >
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" :id="`rec-${recurso}`" :value="recurso"
-                v-model="form.recursos" />
-              <label class="form-check-label" :for="`rec-${recurso}`">{{ recurso }}</label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :id="`rec-${recurso}`"
+                :value="recurso"
+                v-model="form.recursos"
+              />
+              <label class="form-check-label" :for="`rec-${recurso}`">{{
+                recurso
+              }}</label>
             </div>
           </div>
         </div>
@@ -20,20 +31,42 @@
       <div class="col-md-6 mb-3">
         <label class="form-label">¿Dónde te gustaría trabajar?</label>
         <div class="dropdown w-100">
-          <div class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer">
-            <span class="text-muted" v-if="form.preferenciasTrabajo.length === 0">
+          <div
+            class="form-control dropdown-toggle d-flex justify-content-between align-items-center"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="cursor: pointer"
+          >
+            <span
+              class="text-muted"
+              v-if="form.preferenciasTrabajo.length === 0"
+            >
               Selecciona dónde te gustaría trabajar
             </span>
             <span v-else>{{ form.preferenciasTrabajo.join(", ") }}</span>
           </div>
-          <ul class="dropdown-menu w-100 shadow-sm" style="max-height: 200px; overflow-y: auto">
-            <li v-for="preferenciaTrabajo in preferenciasTrabajoDisponibles" :key="preferenciaTrabajo">
+          <ul
+            class="dropdown-menu w-100 shadow-sm"
+            style="max-height: 200px; overflow-y: auto"
+          >
+            <li
+              v-for="preferenciaTrabajo in preferenciasTrabajoDisponibles"
+              :key="preferenciaTrabajo"
+            >
               <div class="dropdown-item">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" :id="`rec-${preferenciaTrabajo}`"
-                    :value="preferenciaTrabajo" v-model="form.preferenciasTrabajo" />
-                  <label class="form-check-label" :for="`rec-${preferenciaTrabajo}`">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    :id="`rec-${preferenciaTrabajo}`"
+                    :value="preferenciaTrabajo"
+                    v-model="form.preferenciasTrabajo"
+                  />
+                  <label
+                    class="form-check-label"
+                    :for="`rec-${preferenciaTrabajo}`"
+                  >
                     {{ preferenciaTrabajo }}
                   </label>
                 </div>
@@ -52,40 +85,77 @@
       <!-- WhatsApp -->
       <div class="col-md-6 mb-3">
         <label for="whatsapp" class="form-label">WhatsApp</label>
-        <input id="whatsapp" type="text" class="form-control" :class="{ 'is-invalid': errores.whatsapp }"
-          placeholder="+57" v-model="form.whatsapp" @input="errores.whatsapp = ''"
-          @blur="validarCampo('whatsapp', form.whatsapp)" />
+        <input
+          id="whatsapp"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.whatsapp }"
+          placeholder="+57"
+          v-model="form.whatsapp"
+          @input="errores.whatsapp = ''"
+          @blur="validarCampo('whatsapp', form.whatsapp)"
+        />
       </div>
 
       <!-- Correo -->
       <div class="col-md-6 mb-3">
         <label for="correo" class="form-label">Correo electrónico</label>
-        <input id="correo" type="email" class="form-control" :class="{ 'is-invalid': errores.correo }"
-          v-model="form.correo" @input="errores.correo = ''" @blur="validarCampo('correo', form.correo)" />
+        <input
+          id="correo"
+          type="email"
+          class="form-control"
+          :class="{ 'is-invalid': errores.correo }"
+          v-model="form.correo"
+          @input="errores.correo = ''"
+          @blur="validarCampo('correo', form.correo)"
+        />
       </div>
 
       <!-- Contraseña -->
       <div class="col-md-6 mb-3">
         <label for="contrasena" class="form-label">Contraseña</label>
-        <input id="contrasena" type="password" class="form-control" :class="{ 'is-invalid': errores.contrasena }"
-          v-model="form.contrasena" placeholder="Mínimo 8 caracteres" @input="errores.contrasena = ''"
-          @blur="validarCampo('contrasena', form.contrasena)" />
+        <input
+          id="contrasena"
+          type="password"
+          class="form-control"
+          :class="{ 'is-invalid': errores.contrasena }"
+          v-model="form.contrasena"
+          placeholder="Mínimo 8 caracteres"
+          @input="errores.contrasena = ''"
+          @blur="validarCampo('contrasena', form.contrasena)"
+        />
       </div>
 
       <!-- Confirmar contraseña -->
       <div class="col-md-6 mb-3">
-        <label for="confirmarContrasena" class="form-label">Confirmar contraseña</label>
-        <input id="confirmarContrasena" type="password" class="form-control" :class="{
-          'is-invalid': errores.confirmarContrasena || contrasenasNoCoinciden,
-        }" v-model="confirmarContrasena" placeholder="Mínimo 8 caracteres" @input="errores.confirmarContrasena = ''"
-          @blur="validarCampo('confirmarContrasena', confirmarContrasena)" />
+        <label for="confirmarContrasena" class="form-label"
+          >Confirmar contraseña</label
+        >
+        <input
+          id="confirmarContrasena"
+          type="password"
+          class="form-control"
+          :class="{
+            'is-invalid': errores.confirmarContrasena || contrasenasNoCoinciden,
+          }"
+          v-model="confirmarContrasena"
+          placeholder="Mínimo 8 caracteres"
+          @input="errores.confirmarContrasena = ''"
+          @blur="validarCampo('confirmarContrasena', confirmarContrasena)"
+        />
       </div>
-
     </div>
 
+    <!-- Botones -->
     <div class="d-flex justify-content-between">
-      <button class="btn btn-secondary" @click="$emit('anterior')">Atrás</button>
-      <button class="btn btn-primary" @click="validarYEnviar" :disabled="!formularioValido">
+      <button class="btn btn-secondary" @click="$emit('anterior')">
+        Atrás
+      </button>
+      <button
+        class="btn btn-primary"
+        @click="validarYEnviar"
+        :disabled="!formularioValido"
+      >
         Registrarse
       </button>
     </div>
@@ -93,28 +163,26 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, onMounted } from 'vue'
-import Dropdown from 'bootstrap/js/dist/dropdown'
+import { computed, reactive, ref, onMounted } from "vue";
+import Dropdown from "bootstrap/js/dist/dropdown";
 
-const confirmarContrasena = ref("")
-const props = defineProps(['modelValue'])
-const emit = defineEmits(['update:modelValue', 'enviar', 'anterior'])
+const confirmarContrasena = ref("");
+const props = defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue", "enviar", "anterior"]);
 
 const form = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
-})
+  set: (val) => emit("update:modelValue", val),
+});
 
 onMounted(() => {
-  const dropdowns = document.querySelectorAll('[data-bs-toggle="dropdown"]')
-  dropdowns.forEach(el => new Dropdown(el))
-})
+  const dropdowns = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+  dropdowns.forEach((el) => new Dropdown(el));
+});
 
-const preferenciasTrabajoDisponibles = [
-  "Startup", "Empresa", "Gobierno"
-];
+const preferenciasTrabajoDisponibles = ["Startup", "Empresa", "Gobierno"];
 
-const recursosDisponibles = ['PC', 'Internet']
+const recursosDisponibles = ["PC", "Internet"];
 
 function handleHV(e) {
   const file = e.target.files[0];
@@ -144,7 +212,10 @@ function validarCampo(nombre, valor) {
 }
 
 const contrasenasNoCoinciden = computed(() => {
-  return confirmarContrasena.value && form.value.contrasena !== confirmarContrasena.value;
+  return (
+    confirmarContrasena.value &&
+    form.value.contrasena !== confirmarContrasena.value
+  );
 });
 
 const formularioValido = computed(() => {
@@ -168,5 +239,4 @@ function validarYEnviar() {
     emit("enviar");
   }
 }
-
 </script>

@@ -5,41 +5,77 @@
       <!-- WhatsApp -->
       <div class="col-md-6 mb-3">
         <label for="whatsapp" class="form-label">WhatsApp</label>
-        <input id="whatsapp" type="text" class="form-control" :class="{ 'is-invalid': errores.whatsapp }"
-          placeholder="+57" v-model="form.whatsapp" @input="errores.whatsapp = ''"
-          @blur="validarCampo('whatsapp', form.whatsapp)" />
+        <input
+          id="whatsapp"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errores.whatsapp }"
+          placeholder="+57"
+          v-model="form.whatsapp"
+          @input="errores.whatsapp = ''"
+          @blur="validarCampo('whatsapp', form.whatsapp)"
+        />
       </div>
 
       <!-- Correo -->
       <div class="col-md-6 mb-3">
         <label for="correo" class="form-label">Correo electrónico</label>
-        <input id="correo" type="email" class="form-control" :class="{ 'is-invalid': errores.correo }"
-          v-model="form.correo" @input="errores.correo = ''" @blur="validarCampo('correo', form.correo)" />
+        <input
+          id="correo"
+          type="email"
+          class="form-control"
+          :class="{ 'is-invalid': errores.correo }"
+          v-model="form.correo"
+          @input="errores.correo = ''"
+          @blur="validarCampo('correo', form.correo)"
+        />
       </div>
 
       <!-- Contraseña -->
       <div class="col-md-6 mb-3">
         <label for="contrasena" class="form-label">Contraseña</label>
-        <input id="contrasena" type="password" class="form-control" :class="{ 'is-invalid': errores.contrasena }"
-          v-model="form.contrasena" placeholder="Mínimo 8 caracteres" @input="errores.contrasena = ''"
-          @blur="validarCampo('contrasena', form.contrasena)" />
+        <input
+          id="contrasena"
+          type="password"
+          class="form-control"
+          :class="{ 'is-invalid': errores.contrasena }"
+          v-model="form.contrasena"
+          placeholder="Mínimo 8 caracteres"
+          @input="errores.contrasena = ''"
+          @blur="validarCampo('contrasena', form.contrasena)"
+        />
       </div>
 
       <!-- Confirmar contraseña -->
       <div class="col-md-6 mb-3">
-        <label for="confirmarContrasena" class="form-label">Confirmar contraseña</label>
-        <input id="confirmarContrasena" type="password" class="form-control" :class="{
-          'is-invalid': errores.confirmarContrasena || contrasenasNoCoinciden,
-        }" v-model="confirmarContrasena" placeholder="Mínimo 8 caracteres" @input="errores.confirmarContrasena = ''"
-          @blur="validarCampo('confirmarContrasena', confirmarContrasena)" />
+        <label for="confirmarContrasena" class="form-label"
+          >Confirmar contraseña</label
+        >
+        <input
+          id="confirmarContrasena"
+          type="password"
+          class="form-control"
+          :class="{
+            'is-invalid': errores.confirmarContrasena || contrasenasNoCoinciden,
+          }"
+          v-model="confirmarContrasena"
+          placeholder="Mínimo 8 caracteres"
+          @input="errores.confirmarContrasena = ''"
+          @blur="validarCampo('confirmarContrasena', confirmarContrasena)"
+        />
       </div>
     </div>
 
+    <!-- Botones -->
     <div class="d-flex justify-content-between">
       <button class="btn btn-secondary" @click="$emit('anterior')">
         Atrás
       </button>
-      <button class="btn btn-primary" @click="validarYEnviar" :disabled="!formularioValido">
+      <button
+        class="btn btn-primary"
+        @click="validarYEnviar"
+        :disabled="!formularioValido"
+      >
         Registrarse
       </button>
     </div>
@@ -49,7 +85,7 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
 
-const confirmarContrasena = ref("")
+const confirmarContrasena = ref("");
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue", "enviar", "anterior"]);
 
@@ -81,7 +117,10 @@ function validarCampo(nombre, valor) {
 }
 
 const contrasenasNoCoinciden = computed(() => {
-  return confirmarContrasena.value && form.value.contrasena !== confirmarContrasena.value;
+  return (
+    confirmarContrasena.value &&
+    form.value.contrasena !== confirmarContrasena.value
+  );
 });
 
 const formularioValido = computed(() => {

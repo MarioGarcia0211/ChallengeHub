@@ -1,5 +1,7 @@
 <template>
-  <footer class="border-top py-3 px-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start">
+  <footer
+    class="border-top py-3 px-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start"
+  >
     <div class="d-flex align-items-center justify-content-center mb-2 mb-md-0">
       <span>© Mario García</span>
     </div>
@@ -22,29 +24,61 @@
 </template>
 
 <script>
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap";
 export default {
   data() {
     return {
       iconos: [
-        { nombre: 'instagram', url: 'https://www.instagram.com', clase: 'instagram', icono: 'bi bi-instagram' },
-        { nombre: 'facebook', url: 'https://www.facebook.com', clase: 'facebook', icono: 'bi bi-facebook' },
-        { nombre: 'twitter', url: 'https://twitter.com', clase: 'twitter', icono: 'bi bi-twitter-x' },
-        { nombre: 'whatsapp', url: 'https://wa.me/1234567890', clase: 'whatsapp', icono: 'bi bi-whatsapp' },
-        { nombre: 'linkedin', url: 'https://www.linkedin.com', clase: 'linkedin', icono: 'bi bi-linkedin' },
-        { nombre: 'github', url: 'https://github.com', clase: 'github', icono: 'bi bi-github' }
-      ]
+        {
+          nombre: "instagram",
+          url: "https://www.instagram.com",
+          clase: "instagram",
+          icono: "bi bi-instagram",
+        },
+        {
+          nombre: "facebook",
+          url: "https://www.facebook.com",
+          clase: "facebook",
+          icono: "bi bi-facebook",
+        },
+        {
+          nombre: "twitter",
+          url: "https://twitter.com",
+          clase: "twitter",
+          icono: "bi bi-twitter-x",
+        },
+        {
+          nombre: "whatsapp",
+          url: "https://wa.me/1234567890",
+          clase: "whatsapp",
+          icono: "bi bi-whatsapp",
+        },
+        {
+          nombre: "linkedin",
+          url: "https://www.linkedin.com",
+          clase: "linkedin",
+          icono: "bi bi-linkedin",
+        },
+        {
+          nombre: "github",
+          url: "https://github.com",
+          clase: "github",
+          icono: "bi bi-github",
+        },
+      ],
     };
   },
   mounted() {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+    const tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
   },
   methods: {
     capitalizar(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -59,19 +93,19 @@ ul li a i {
 
 /* Colores individuales */
 .instagram i {
-  color: #E1306C;
+  color: #e1306c;
 }
 .facebook i {
-  color: #1877F2;
+  color: #1877f2;
 }
 .twitter i {
   color: #000000;
 }
 .whatsapp i {
-  color: #25D366;
+  color: #25d366;
 }
 .linkedin i {
-  color: #0077B5;
+  color: #0077b5;
 }
 .github i {
   color: #171515;

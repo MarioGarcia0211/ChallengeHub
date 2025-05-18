@@ -1,4 +1,8 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth, db } from "../firebase/config";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -19,19 +23,31 @@ export const iniciarSesion = async (email, password) => {
 };
 
 // Función para registrar usuario y guardar en Firestore
-export const registrarUsuario = async (email, password, tipoUsuario, datosEspecificos) => {
+export const registrarUsuario = async (
+  email,
+  password,
+  tipoUsuario,
+  datosEspecificos
+) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const uid = userCredential.user.uid;
 
     // Crear documento principal en "usuarios"
     await setDoc(doc(db, "usuarios", uid), {
       correo: email,
-      tipoUsuario: tipoUsuario
+      tipoUsuario: tipoUsuario,
     });
 
     // Crear documento en subcolección con más detalles según el tipoUsuario
-    await setDoc(doc(db, "usuarios", uid, tipoUsuario, "datos"), datosEspecificos);
+    await setDoc(
+      doc(db, "usuarios", uid, tipoUsuario, "datos"),
+      datosEspecificos
+    );
 
     return uid;
   } catch (error) {

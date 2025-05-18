@@ -93,7 +93,7 @@ import PersonaPaso4Contacto from "../components/Registro/PersonaPaso4Contacto.vu
 import EmpresaPaso2DatosEmpresa from "../components/Registro/EmpresaPaso2DatosEmpresa.vue";
 import EmpresaPaso3Descripcion from "../components/Registro/EmpresaPaso3Descripcion.vue";
 import EmpresaPaso4Contacto from "../components/Registro/EmpresaPaso4Contacto.vue";
-import {registrarUsuario} from "../services/authServices"
+import { registrarUsuario } from "../services/authServices";
 
 // Control de pasos
 const pasoActual = ref(1);
@@ -162,7 +162,6 @@ const registrarPersona = async () => {
 
     await registrarUsuario(datos.correo, datos.contrasena, "Persona", datos);
     console.log("Registro de persona exitoso");
-    
   } catch (error) {
     console.error("Error al registrar persona:", error);
   }

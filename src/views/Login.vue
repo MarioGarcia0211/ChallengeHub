@@ -16,7 +16,9 @@
           </div>
 
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary">
+              Iniciar Sesión
+            </button>
           </div>
         </form>
 
@@ -44,10 +46,11 @@ const alertasRef = ref(null);
 const login = async () => {
   if (!correo.value || !clave.value) {
     alertasRef.value?.mostrarToast?.(
-      'error', // Icono
-      'Por favor, completa todos los campos.', // Titulo
-      '',  // Texto adicional
-      'toast-error'); // Clase personalizada
+      "error", // Icono
+      "Por favor, completa todos los campos.", // Titulo
+      "", // Texto adicional
+      "toast-error"
+    ); // Clase personalizada
     return;
   }
   try {
@@ -60,7 +63,6 @@ const login = async () => {
   }
 };
 </script>
-
 
 <style>
 .container-login {
