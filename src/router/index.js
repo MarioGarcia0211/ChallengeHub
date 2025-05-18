@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Inicio from "../views/Inicio.vue";
+import { getCurrentUser } from "../services/authServices";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -31,20 +31,18 @@ const router = createRouter({
   routes,
 });
 
-// Proteger rutas
-router.beforeEach((to, from, next) => {
-  const auth = getAuth();
+// Protección de rutas
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const user = await getCurrentUser();
 
-  onAuthStateChanged(auth, (user) => {
-    if (requiresAuth && !user) {
-      next("/login");
-    } else if ((to.path === "/login" || to.path === "/register") && user) {
-      next("/inicio");
-    } else {
-      next();
-    }
-  });
+  if (requiresAuth && !user) {
+    next("/login");
+  } else if ((to.path === "/login" || to.path === "/register") && user) {
+    next("/inicio");
+  } else {
+    next();
+  }
 });
 
 export default router;

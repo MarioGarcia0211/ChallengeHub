@@ -13,6 +13,7 @@ import {
   where,
   collection,
 } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 // Función iniciar sesión
 export const iniciarSesion = async (email, password) => {
@@ -116,4 +117,18 @@ export const verificarNitUnico = async (nit) => {
 
   const querySnapshot = await getDocs(q);
   return !querySnapshot.empty;
+};
+
+// Función para obtener el usuario actual
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe(); // Deja de escuchar apenas obtienes el usuario
+        resolve(user); // Devuelve el usuario (o null si no hay sesión)
+      },
+      reject
+    );
+  });
 };

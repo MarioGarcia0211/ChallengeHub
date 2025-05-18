@@ -55,7 +55,6 @@ const login = async () => {
   }
   try {
     const usuario = await iniciarSesion(correo.value, clave.value);
-    console.log("Usuario autenticado:", usuario);
     router.push("/inicio");
   } catch (error) {
     alertasRef.value?.mostrarToast?.("error", error, "", "toast-error");
