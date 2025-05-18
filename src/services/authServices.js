@@ -11,6 +11,7 @@ import {
   getDocs,
   query,
   where,
+  collection,
 } from "firebase/firestore";
 
 // Función iniciar sesión
@@ -100,4 +101,10 @@ export const verificarDocumentoUnico = async (numeroDocumento) => {
 
   const querySnapshot = await getDocs(q);
   return !querySnapshot.empty; // true si ya existe, false si es único
+};
+
+export const verificarCorreoUnico = async (correo) => {
+  const q = query(collection(db, "usuarios"), where("correo", "==", correo));
+  const snapshot = await getDocs(q);
+  return !snapshot.empty; // true si ya existe, false sino
 };
