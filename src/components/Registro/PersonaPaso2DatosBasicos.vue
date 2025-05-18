@@ -118,12 +118,12 @@
 </template>
 
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { verificarDocumentoUnico } from "../../services/authServices";
 import Alertas from "../Alertas/Alertas.vue";
 
 const props = defineProps(["modelValue"]);
-const emit = defineEmits(["update:modelValue", "siguiente"]);
+const emit = defineEmits(["update:modelValue", "siguiente", "anterior"]);
 const alertasRef = ref(null);
 
 const form = computed({
@@ -155,20 +155,32 @@ function limpiarError(campo) {
   errores[campo] = "";
 }
 
-function validarYContinuar() {
+async function validarYContinuar() {
+  // Validaciones de campos obligatorios
   validarCampo("nombres", form.value.nombres);
   validarCampo("apellidos", form.value.apellidos);
   validarCampo("numeroDocumento", form.value.numeroDocumento);
   validarCampo("ciudad", form.value.ciudad);
 
-  if (formularioValido.value) return;
+  // Si hay errores, no continuar
+  if (!formularioValido.value) return;
 
-  const existe = verificarDocumentoUnico(form.value.numeroDocumento);
+  // Verificar si el número de documento ya está registrado
+  const existe = await verificarDocumentoUnico(form.value.numeroDocumento);
+  console.log(existe);
+
   if (existe) {
     errores.numeroDocumento = "Este número de documento ya está registrado.";
+    alertasRef.value?.mostrarToast?.(
+      "error",
+      errores.numeroDocumento,
+      "",
+      "toast-error"
+    );
     return;
   }
 
+  // Emitir evento para continuar al siguiente paso
   emit("siguiente");
 }
 
