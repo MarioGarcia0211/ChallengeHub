@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="border-top py-3 px-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start"
+    class="border-top py-3 px-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start mt-3"
   >
     <div class="d-flex align-items-center justify-content-center mb-2 mb-md-0">
       <span>© Mario García</span>
