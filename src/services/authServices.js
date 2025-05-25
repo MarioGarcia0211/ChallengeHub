@@ -108,3 +108,10 @@ export const verificarDocumentoUnico = async (numeroDocumento) => {
   const querySnapshot = await getDocs(q);
   return !querySnapshot.empty;
 };
+
+// Funcion verificar correo
+export const verificarCorreoUnico = async (correo) => {
+  const q = query(collection(db, "usuarios"), where("correo", "==", correo));
+  const snapshot = await getDocs(q);
+  return !snapshot.empty;
+};

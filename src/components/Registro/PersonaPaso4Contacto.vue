@@ -169,6 +169,7 @@
 import { computed, reactive, ref, onMounted } from "vue";
 import Dropdown from "bootstrap/js/dist/dropdown";
 import Alertas from "../Alertas/Alertas.vue";
+import { verificarCorreoUnico } from "../../services/authServices";
 
 const confirmarContrasena = ref("");
 const props = defineProps(["modelValue"]);
@@ -236,6 +237,20 @@ async function validarYEnviar() {
   validarCampo("confirmarContrasena", confirmarContrasena.value);
 
   if (!formularioValido.value) return;
+
+  // Verifica si el correo ya esta registrado
+  const existe = await verificarCorreoUnico(form.value.correo);
+
+  if (existe) {
+    errores.correo = "Este correo ya está registrado.";
+    alertasRef.value?.mostrarToast?.(
+      "error",
+      errores.correo,
+      "",
+      "toast-error"
+    );
+    return;
+  }
 
   emit("enviar");
 }
