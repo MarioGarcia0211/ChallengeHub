@@ -121,6 +121,7 @@
 import { computed, reactive, ref } from "vue";
 import Alertas from "../Alertas/Alertas.vue";
 import { verificarDocumentoUnico } from "../../services/authServices";
+import { subirImagenCloudinary } from "../../services/cloudinary.js";
 
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue", "siguiente", "anterior"]);
@@ -178,6 +179,22 @@ async function validarYContinuar() {
       "toast-error"
     );
     return;
+  }
+
+  if (form.value.fotoPerfil instanceof File) {
+    try {
+      const urlImagen = await subirImagenCloudinary(form.value.fotoPerfil);
+      form.value.fotoPerfil = urlImagen; // Guardar la URL en el form
+    } catch (error) {
+      console.log(error);
+      alertasRef.value?.mostrarToast?.(
+        "error",
+        "No se pudo subir la foto de perfil",
+        "",
+        "toast-error"
+      );
+      return;
+    }
   }
 
   // Emitir evento para continuar al siguiente paso
