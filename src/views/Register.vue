@@ -159,12 +159,4 @@ const registrarPersona = async () => {
 .text-center a:hover {
   text-decoration: underline;
 }
-
-.swal2-toast {
-  width: 308px !important;
-  max-width: 350px !important;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
-  margin: 1rem !important;
-  padding: 1rem !important;
-}
 </style>
