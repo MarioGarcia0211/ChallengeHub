@@ -120,6 +120,7 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
 import Alertas from "../Alertas/Alertas.vue";
+import { verificarDocumentoUnico } from "../../services/authServices";
 
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue", "siguiente", "anterior"]);
@@ -164,6 +165,20 @@ async function validarYContinuar() {
 
   // Si hay errores, no continuar
   if (!formularioValido.value) return;
+
+  // Verificar si el número de documento ya está registrado
+  const existe = await verificarDocumentoUnico(form.value.numeroDocumento);
+
+  if (existe) {
+    errores.numeroDocumento = "Este número de documento ya está registrado.";
+    alertasRef.value?.mostrarToast?.(
+      "error",
+      errores.numeroDocumento,
+      "",
+      "toast-error"
+    );
+    return;
+  }
 
   // Emitir evento para continuar al siguiente paso
   emit("siguiente");
