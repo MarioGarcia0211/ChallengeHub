@@ -30,6 +30,26 @@
           @anterior="pasoActual--"
         />
 
+        <!-- PASOS PARA EMPRESA -->
+        <EmpresaPaso2DatosEmpresa
+          v-if="tipoUsuario === 'empresa' && pasoActual === 2"
+          v-model="datosEmpresa"
+          @siguiente="siguientePaso"
+          @anterior="pasoActual--"
+        />
+        <EmpresaPaso3Descripcion
+          v-if="tipoUsuario === 'empresa' && pasoActual === 3"
+          v-model="datosEmpresa"
+          @siguiente="siguientePaso"
+          @anterior="pasoActual--"
+        />
+        <EmpresaPaso4Contacto
+          v-if="tipoUsuario === 'empresa' && pasoActual === 4"
+          v-model="datosEmpresa"
+          @enviar="registrarEmpresa"
+          @anterior="pasoActual--"
+        />
+
         <p class="mt-3 text-center">
           ¿Ya tienes una cuenta?
           <router-link to="/login">Inicia sesión</router-link>
@@ -50,6 +70,9 @@ import Paso1TipoUsuario from "../components/Registro/Paso1TipoUsuario.vue";
 import PersonaPaso2DatosBasicos from "../components/Registro/PersonaPaso2DatosBasicos.vue";
 import PersonaPaso3Tecnologias from "../components/Registro/PersonaPaso3Tecnologias.vue";
 import PersonaPaso4Contacto from "../components/Registro/PersonaPaso4Contacto.vue";
+import EmpresaPaso2DatosEmpresa from "../components/Registro/EmpresaPaso2DatosEmpresa.vue";
+import EmpresaPaso3Descripcion from "../components/Registro/EmpresaPaso3Descripcion.vue";
+import EmpresaPaso4Contacto from "../components/Registro/EmpresaPaso4Contacto.vue";
 
 const router = useRouter();
 const pasoActual = ref(1);
@@ -127,6 +150,25 @@ const registrarPersona = async () => {
     }, 3000);
   } catch (error) {
     console.error("Error al registrar persona:", error);
+  }
+};
+
+const registrarEmpresa = async () => {
+  try {
+    const datos = { ...datosEmpresa };
+
+    await registrarUsuario(datos.correo, datos.contrasena, "empresa", datos);
+    alertasRef.value?.mostrarToast?.(
+      "success",
+      "Registro exitoso",
+      "",
+      "toast-success"
+    );
+    setTimeout(() => {
+      router.push("/login");
+    }, 3000);
+  } catch (error) {
+    console.error("Error al registrar empresa:", error);
   }
 };
 </script>

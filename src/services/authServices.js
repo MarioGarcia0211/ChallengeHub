@@ -115,3 +115,11 @@ export const verificarCorreoUnico = async (correo) => {
   const snapshot = await getDocs(q);
   return !snapshot.empty;
 };
+
+// Funcion verificar nit
+export const verificarNitUnico = async (nit) => {
+  const q = query(collectionGroup(db, "empresa"), where("nit", "==", nit));
+
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+};
