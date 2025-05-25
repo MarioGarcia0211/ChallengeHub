@@ -3,7 +3,7 @@
     <h6 class="text-end">Paso 3 de 4</h6>
     <div class="row align-items-center">
       <!-- Descripción -->
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-2">
         <label class="form-label">Descripción</label>
         <textarea
           class="form-control"
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Tecnologías -->
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-2">
         <label class="form-label">Selecciona las tecnologías que manejas</label>
         <div class="dropdown w-100 position-relative">
           <button
@@ -66,7 +66,7 @@
       </div>
 
       <!-- Habilidades -->
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-2">
         <label class="form-label">Selecciona tus habilidades</label>
         <div class="dropdown w-100">
           <button

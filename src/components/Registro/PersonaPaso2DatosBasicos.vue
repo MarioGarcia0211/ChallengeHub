@@ -3,7 +3,7 @@
     <h6 class="text-end">Paso 2 de 4</h6>
     <div class="row align-items-center">
       <!-- Nombre(s) -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="nombres" class="form-label">Nombre(s)</label>
         <input
           id="nombres"
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Apellidos -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="apellidos" class="form-label">Apellidos</label>
         <input
           id="apellidos"
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Tipo de documento -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="tipoDocumento" class="form-label">Tipo de Documento</label>
         <select
           id="tipoDocumento"
@@ -46,7 +46,7 @@
       </div>
 
       <!-- Número de documento -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="numeroDocumento" class="form-label"
           >Número de documento</label
         >
@@ -62,7 +62,7 @@
       </div>
 
       <!-- Foto de perfil -->
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-2">
         <label for="fotoPerfil" class="form-label">Foto de perfil</label>
         <input
           id="fotoPerfil"
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Ciudad -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="ciudad" class="form-label">Ciudad</label>
         <input
           id="ciudad"
@@ -87,7 +87,7 @@
       </div>
 
       <!-- País -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="pais" class="form-label">País</label>
         <select id="pais" class="form-select" v-model="form.pais">
           <option disabled value="">Selecciona un país</option>

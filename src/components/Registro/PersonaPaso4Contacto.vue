@@ -3,7 +3,7 @@
     <h6 class="text-end">Paso 4 de 4</h6>
     <div class="row align-items-center">
       <!-- Recursos -->
-      <div class="col-md-12 mb-3">
+      <div class="col-md-12 mb-2">
         <label class="form-label">¿Qué recursos tienes?</label>
         <div class="row">
           <div
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Preferencias de trabajo -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label class="form-label">¿Dónde te gustaría trabajar?</label>
         <div class="dropdown w-100">
           <div
@@ -77,13 +77,13 @@
       </div>
 
       <!-- Hoja de vida -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label class="form-label">Hoja de vida</label>
         <input type="file" class="form-control" />
       </div>
 
       <!-- WhatsApp -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="whatsapp" class="form-label">WhatsApp</label>
         <input
           id="whatsapp"
@@ -98,7 +98,7 @@
       </div>
 
       <!-- Correo -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="correo" class="form-label">Correo electrónico</label>
         <input
           id="correo"
@@ -112,7 +112,7 @@
       </div>
 
       <!-- Contraseña -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="contrasena" class="form-label">Contraseña</label>
         <input
           id="contrasena"
@@ -127,7 +127,7 @@
       </div>
 
       <!-- Confirmar contraseña -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-2">
         <label for="confirmarContrasena" class="form-label"
           >Confirmar contraseña</label
         >
@@ -147,7 +147,7 @@
     </div>
 
     <!-- Botones -->
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between mt-2">
       <button class="btn btn-secondary" @click="$emit('anterior')">
         Atrás
       </button>
