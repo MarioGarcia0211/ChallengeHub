@@ -3,7 +3,7 @@
     <div
       class="container-fluid d-flex justify-content-between align-items-center"
     >
-      <router-link class="navbar-brand mb-0 h1 titulo-navbar" to="/inicio">
+      <router-link class="navbar-brand mb-0 h1 titulo-navbar" to="/">
         ChallengeHub
       </router-link>
 
