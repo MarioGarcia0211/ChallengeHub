@@ -44,6 +44,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { registrarUsuario } from "../services/authServices";
 import Alertas from "../components/Alertas/Alertas.vue";
 import Paso1TipoUsuario from "../components/Registro/Paso1TipoUsuario.vue";
 import PersonaPaso2DatosBasicos from "../components/Registro/PersonaPaso2DatosBasicos.vue";
@@ -114,15 +115,16 @@ const siguientePaso = () => {
 const registrarPersona = async () => {
   try {
     const datos = { ...datosPersona };
-    console.log(datos);
-
-    router.push("/login");
+    await registrarUsuario(datos.correo, datos.contrasena, "persona", datos);
     alertasRef.value?.mostrarToast?.(
       "success",
       "Registro exitoso",
       "",
       "toast-success"
     );
+    setTimeout(() => {
+      router.push("/login");
+    }, 3000);
   } catch (error) {
     console.error("Error al registrar persona:", error);
   }

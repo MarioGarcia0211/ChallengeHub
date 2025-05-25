@@ -1,5 +1,10 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../firebase/config";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { auth, db } from "../firebase/config";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 // Función iniciar sesión
 export const iniciarSesion = async (email, password) => {
@@ -13,6 +18,44 @@ export const iniciarSesion = async (email, password) => {
     return userCredential.user;
   } catch (error) {
     // console.log(error.code);
+    throw mapFirebaseError(error.code);
+  }
+};
+
+// Función para registrar usuario y guardar en Firestore
+export const registrarUsuario = async (
+  email,
+  password,
+  tipoUsuario,
+  datosEspecificos
+) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const uid = userCredential.user.uid;
+
+    // Documento principal con solo los datos necesarios
+    await setDoc(doc(db, "usuarios", uid), {
+      correo: email,
+      tipoUsuario,
+      fechaRegistro: serverTimestamp(), // fecha de registro desde el servidor
+    });
+
+    // Copia los datos y elimina la contraseña
+    const datosFiltrados = { ...datosEspecificos };
+    delete datosFiltrados.contrasena;
+
+    // Guardar los datos en subcolección "persona" o "empresa" > "datos"
+    await setDoc(
+      doc(db, "usuarios", uid, tipoUsuario, "datos"),
+      datosFiltrados
+    );
+
+    return uid;
+  } catch (error) {
     throw mapFirebaseError(error.code);
   }
 };
