@@ -5,3 +5,19 @@ body.bg-login {
 body.bg-default {
   background-color: #e2e7f8;
 }
+
+.toast-success .swal2-timer-progress-bar {
+  background: #4caf50;
+}
+
+.toast-error .swal2-timer-progress-bar {
+  background: #f44336;
+}
+
+.toast-warning .swal2-timer-progress-bar {
+  background: #ff9800;
+}
+
+.toast-info .swal2-timer-progress-bar {
+  background: #2196f3;
+}

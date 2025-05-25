@@ -29,20 +29,29 @@
       </div>
     </div>
   </div>
+  <!-- Alerta -->
+  <Alertas ref="alertasRef" />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { iniciarSesion } from "../services/authServices";
+import Alertas from "../components/Alertas/Alertas.vue";
 
 const correo = ref("");
 const clave = ref("");
 const router = useRouter();
+const alertasRef = ref(null);
 
 const login = async () => {
   if (!correo.value || !clave.value) {
-    alert("Todos los campos son obligatorios");
+    alertasRef.value?.mostrarToast?.(
+      "error",
+      "Por favor, completa todos los campos.",
+      "",
+      "toast-error"
+    );
     return;
   }
 
@@ -51,6 +60,7 @@ const login = async () => {
     console.log("Usuario autenticado:", usuario);
     router.push("/inicio");
   } catch (error) {
+    alertasRef.value?.mostrarToast?.("error", error, "", "toast-error");
     console.log("Error al iniciar sesión:", error);
   }
 };
