@@ -21,3 +21,19 @@ body.bg-default {
 .toast-info .swal2-timer-progress-bar {
   background: #2196f3;
 }
+
+.contenedor-card{
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.cont-fluid {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  min-height: 74.5vh;
+}

@@ -7,7 +7,7 @@
         ChallengeHub
       </router-link>
 
-      <div v-if="usuario">
+      <div>
         <button class="btn btn-outline-danger btn-sm" @click="cerrarSesion">
           Cerrar sesión
         </button>
@@ -25,13 +25,13 @@ const usuario = ref(null);
 const router = useRouter();
 const auth = getAuth();
 
-// Detectar usuario autenticado
-onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
-    usuario.value = user;
-    console.log("Datos del usuario:", user);
-  });
-});
+// // Detectar usuario autenticado
+// onMounted(() => {
+//   onAuthStateChanged(auth, (user) => {
+//     usuario.value = user;
+//     console.log("Datos del usuario:", user);
+//   });
+// });
 
 // Cerrar sesión
 const cerrarSesion = async () => {
