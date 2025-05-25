@@ -8,7 +8,7 @@ const mostrarToast = (icono, titulo, texto = "", clase = "") => {
     icon: icono,
     title: titulo,
     text: texto,
-    position: "top-end",
+    position: window.innerWidth <= 600 ? "top" : "top-end",
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
