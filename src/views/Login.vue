@@ -37,6 +37,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { iniciarSesion } from "../services/authServices";
+import { obtenerTipoUsuario } from "../services/userServices";
 import Alertas from "../components/Alertas/Alertas.vue";
 
 const correo = ref("");
@@ -57,8 +58,22 @@ const login = async () => {
 
   try {
     const usuario = await iniciarSesion(correo.value, clave.value);
-    console.log("Usuario autenticado:", usuario);
-    router.push("/inicio");
+    if (!usuario || !usuario.uid) {
+      throw new Error("No se pudo obtener la información del usuario.");
+    }
+    const tipoUsuario = await obtenerTipoUsuario(usuario.uid);
+    if (tipoUsuario === "persona") {
+      router.push("/user-profile");
+    } else if (tipoUsuario === "empresa") {
+      router.push("/company-profile");
+    } else {
+      alertasRef.value?.mostrarToast?.(
+        "error",
+        "Tipo de usuario no reconocido.",
+        "",
+        "toast-error"
+      );
+    }
   } catch (error) {
     alertasRef.value?.mostrarToast?.("error", error, "", "toast-error");
     console.log("Error al iniciar sesión:", error);
