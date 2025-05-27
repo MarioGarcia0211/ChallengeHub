@@ -12,12 +12,14 @@
       <router-view :empresa="empresa" />
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { obtenerDatosUsuario } from "../services/userServices";
 import Navbar from "../components/Navbar/Navbar.vue";
+import Footer from "../components/Footer/Footer.vue";
 import CompanyCard from "../components/CompanyProfile/CompanyCard.vue";
 import CompanyTabs from "../components/CompanyProfile/CompanyTabs.vue";
 
