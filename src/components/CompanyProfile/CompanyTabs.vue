@@ -28,7 +28,7 @@ const tabs = [
   {
     label: "Vacantes",
     icon: "bi bi-briefcase",
-    route: "/company-profile/vacantes",
+    route: "/company-profile/vacant",
   },
   {
     label: "Candidatos",

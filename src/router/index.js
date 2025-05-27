@@ -10,6 +10,7 @@ import UserProfile from "../views/UserProfile.vue";
 import CompanyProfile from "../views/CompanyProfile.vue";
 import CompanyInfo from "../components/CompanyProfile/CompanyInfo.vue";
 import CompanyChallenge from "../components/CompanyProfile/CompanyChallenge.vue";
+import CompanyVancant from "../components/CompanyProfile/CompanyVancant.vue";
 
 const routes = [
   { path: "/login", name: "login", component: Login },
@@ -29,6 +30,7 @@ const routes = [
     children: [
       { path: "profile", name: "", component: CompanyInfo, props: true },
       { path: "challenge", name: "", component: CompanyChallenge },
+      { path: "vacant", name: "", component: CompanyVancant },
     ],
   },
 

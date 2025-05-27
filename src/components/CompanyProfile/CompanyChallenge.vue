@@ -51,8 +51,10 @@
 import { ref, watch } from "vue";
 import CompanyForm from "./CompanyForm.vue";
 import CompanyChallengeCard from "./CompanyChallengeCard.vue";
-import { obtenerRetosPorEmpresa } from "../../services/challengeServices";
-import { eliminarRetoPorID } from "../../services/challengeServices";
+import {
+  obtenerRetosPorEmpresa,
+  eliminarRetoPorID,
+} from "../../services/challengeServices";
 
 const props = defineProps({
   empresa: Object,
