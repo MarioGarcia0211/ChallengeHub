@@ -46,8 +46,8 @@ export function obtenerDatosUsuario() {
           }
 
           const datosUsuario = {
+            uid: uid,
             ...datosSnap.data(),
-            fotoPerfil: datosSnap.data().fotoPerfil || "/src/assets/nagi.jpg",
           };
 
           resolve(datosUsuario);

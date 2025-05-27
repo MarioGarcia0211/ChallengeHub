@@ -6,6 +6,11 @@
 
     <!-- Company Tabs -->
     <CompanyTabs />
+
+    <!-- Contenido dinámico -->
+    <div class="mt-3">
+      <router-view :empresa="empresa" />
+    </div>
   </div>
 </template>
 

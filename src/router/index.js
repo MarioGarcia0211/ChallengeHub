@@ -8,6 +8,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import UserProfile from "../views/UserProfile.vue";
 import CompanyProfile from "../views/CompanyProfile.vue";
+import CompanyInfo from "../components/CompanyProfile/CompanyInfo.vue";
+import CompanyChallenge from "../components/CompanyProfile/CompanyChallenge.vue";
 
 const routes = [
   { path: "/login", name: "login", component: Login },
@@ -23,8 +25,13 @@ const routes = [
     name: "companyProfile",
     component: CompanyProfile,
     meta: { requiresAuth: true, role: "empresa" },
+    redirect: "/company-profile/profile",
+    children: [
+      { path: "profile", name: "", component: CompanyInfo, props: true },
+      { path: "challenge", name: "", component: CompanyChallenge },
+    ],
   },
-  // Ruta raíz para redirigir si está logueado
+
   {
     path: "/",
     redirect: "/login",
