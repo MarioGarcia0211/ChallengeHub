@@ -52,6 +52,7 @@ import { ref, watch } from "vue";
 import CompanyForm from "./CompanyForm.vue";
 import CompanyChallengeCard from "./CompanyChallengeCard.vue";
 import { obtenerRetosPorEmpresa } from "../../services/challengeServices";
+import { eliminarRetoPorID } from "../../services/challengeServices";
 
 const props = defineProps({
   empresa: Object,
@@ -92,10 +93,15 @@ const editarReto = (reto) => {
   mostrarModal.value = true;
 };
 
-const eliminarReto = (reto) => {
-  if (confirm(`¿Estás seguro de eliminar el reto "${reto.nombreReto}"?`)) {
-    console.log("Reto eliminado:", reto);
-    // Aquí iría lógica real de eliminación
+const eliminarReto = async (reto) => {
+  if (confirm(`¿Estás seguro de eliminar el reto "${reto.id}"?`)) {
+    try {
+      await eliminarRetoPorID(reto.id);
+      console.log("Reto eliminado:", reto);
+      await cargarRetos();
+    } catch (error) {
+      console.error("Error al eliminar el reto:", error);
+    }
   }
 };
 

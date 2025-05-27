@@ -54,12 +54,6 @@ export default {
           icono: "bi bi-whatsapp",
         },
         {
-          nombre: "linkedin",
-          url: "https://www.linkedin.com",
-          clase: "linkedin",
-          icono: "bi bi-linkedin",
-        },
-        {
           nombre: "github",
           url: "https://github.com",
           clase: "github",

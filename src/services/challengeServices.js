@@ -8,6 +8,8 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
+  orderBy,
 } from "firebase/firestore";
 
 //Funcion para crear un retp
@@ -26,11 +28,13 @@ export const crearReto = async (reto) => {
   }
 };
 
+//Funcion para obtener retos por empresa
 export const obtenerRetosPorEmpresa = async (empresa) => {
   try {
     const q = query(
       collection(db, "retos"),
-      where("idUsuarioEmpresa", "==", empresa)
+      where("idUsuarioEmpresa", "==", empresa),
+      orderBy("fechaRegistro", "desc")
     );
 
     const querySnapshot = await getDocs(q);
@@ -57,6 +61,17 @@ export const actualizarReto = async (idReto, datosActualizados) => {
     });
   } catch (error) {
     console.error("Error al actualizar el reto:", error);
+    throw error;
+  }
+};
+
+// Función para eliminar un reto por su ID
+export const eliminarRetoPorID = async (idReto) => {
+  try {
+    const retoRef = doc(db, "retos", idReto);
+    await deleteDoc(retoRef);
+  } catch (error) {
+    console.error("Error al eliminar el reto:", error);
     throw error;
   }
 };

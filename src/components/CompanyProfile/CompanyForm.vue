@@ -205,12 +205,15 @@
       </div>
     </div>
   </div>
+  <!-- Alerta -->
+  <Alertas ref="alertasRef" />
 </template>
 
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import Dropdown from "bootstrap/js/dist/dropdown";
 import { crearReto, actualizarReto } from "../../services/challengeServices";
+import Alertas from "../Alertas/Alertas.vue";
 
 // Props y emits
 const props = defineProps({
@@ -219,6 +222,7 @@ const props = defineProps({
   reto: Object,
 });
 const emit = defineEmits(["cerrar", "guardado"]);
+const alertasRef = ref(null);
 
 onMounted(() => {
   const dropdowns = document.querySelectorAll('[data-bs-toggle="dropdown"]');
@@ -350,9 +354,21 @@ const guardarReto = async () => {
 
     if (isEditing.value) {
       await actualizarReto(props.reto?.id, nuevoReto);
+      alertasRef.value?.mostrarToast?.(
+        "success",
+        "Reto actualizado",
+        "",
+        "toast-success"
+      );
       emit("guardado", nuevoReto);
     } else {
       const id = await crearReto(nuevoReto);
+      alertasRef.value?.mostrarToast?.(
+        "success",
+        "Reto creado",
+        "",
+        "toast-success"
+      );
       emit("guardado", { ...nuevoReto, id });
     }
     cerrarModal();

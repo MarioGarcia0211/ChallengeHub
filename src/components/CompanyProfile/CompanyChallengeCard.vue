@@ -107,6 +107,12 @@
           {{ reto.estado }}
         </span>
       </div>
+
+      <hr />
+
+      <div class="mt-auto text-start">
+        Fecha de creación: {{ formatearFecha(reto.fechaRegistro) }}
+      </div>
     </div>
   </div>
 </template>
@@ -121,6 +127,19 @@ defineProps({
 defineEmits(["editar", "eliminar"]);
 
 const mostrarModal = ref(false);
+
+const formatearFecha = (timestamp) => {
+  if (!timestamp?.toDate) return "Fecha no válida";
+  const fecha = timestamp.toDate();
+  return fecha.toLocaleString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
 </script>
 
 <style scoped>
