@@ -1,6 +1,6 @@
 <template>
-  <div class="card shadow rounded overflow-hidden">
-    <div class="card-body">
+  <div class="card shadow rounded overflow-hidden h-100 d-flex flex-column">
+    <div class="card-body d-flex flex-column h-100">
       <div class="d-flex align-items-center mb-3">
         <img
           :src="empresa.logo"
@@ -58,9 +58,7 @@
         </div>
       </div>
 
-      <hr />
-
-      <p class="text-truncated">{{ reto.descripcion }}</p>
+      <p class="text-truncated descripcion-truncada">{{ reto.descripcion }}</p>
 
       <div class="mb-2 d-flex align-items-center">
         <i class="bi bi-display me-2"></i>
@@ -100,20 +98,29 @@
         </div>
       </div>
 
-      <div class="text-end">
-        Estado: <span class="badge bg-success">{{ reto.estado }}</span>
+      <div class="mt-auto text-end">
+        Estado:
+        <span
+          class="badge"
+          :class="reto.estado === 'abierto' ? 'bg-success' : 'bg-danger'"
+        >
+          {{ reto.estado }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted, watch } from "vue";
 defineProps({
   reto: Object,
   empresa: Object,
 });
 
 defineEmits(["editar", "eliminar"]);
+
+const mostrarModal = ref(false);
 </script>
 
 <style scoped>
@@ -129,5 +136,14 @@ defineEmits(["editar", "eliminar"]);
 .extra-badge {
   background-color: #ede9fe;
   color: #6b21a8;
+}
+
+.descripcion-truncada {
+  min-height: 72px; /* Ajusta según diseño */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* número de líneas visibles */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 </style>

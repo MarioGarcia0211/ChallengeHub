@@ -8,7 +8,11 @@
     v-if="mostrarModal"
     :visible="mostrarModal"
     :empresa="empresa"
-    @cerrar="mostrarModal = false"
+    :reto="retoAEditar"
+    @cerrar="
+      mostrarModal = false;
+      retoAEditar = null;
+    "
     @guardado="onRetoGuardado"
   />
 
@@ -23,7 +27,7 @@
   <!-- Lista de retos -->
   <div v-else-if="retos.length" class="row">
     <div
-      class="col-12 col-sm-6 col-lg-4 mb-4"
+      class="col-12 col-sm-6 col-lg-4 mb-4 d-flex"
       v-for="reto in retos"
       :key="reto.id"
     >
@@ -32,6 +36,7 @@
         :empresa="empresa"
         @editar="editarReto"
         @eliminar="eliminarReto"
+        class="w-100 h-100"
       />
     </div>
   </div>
@@ -55,11 +60,13 @@ const props = defineProps({
 const retos = ref([]);
 const mostrarModal = ref(false);
 const cargando = ref(true);
+const retoAEditar = ref(null);
 
 // Recargar lista tras guardar reto
 const onRetoGuardado = async () => {
   await cargarRetos();
   mostrarModal.value = false;
+  retoAEditar.value = null;
 };
 
 // Función para cargar retos
@@ -81,7 +88,8 @@ const cargarRetos = async () => {
 // Acciones de tarjeta
 const editarReto = (reto) => {
   console.log("Editar reto", reto);
-  // Aquí podrías pasar datos al modal para edición
+  retoAEditar.value = reto;
+  mostrarModal.value = true;
 };
 
 const eliminarReto = (reto) => {

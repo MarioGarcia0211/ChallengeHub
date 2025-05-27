@@ -9,7 +9,9 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Crear reto</h5>
+          <h5 class="modal-title">
+            {{ isEditing ? "Editar reto" : "Crear reto" }}
+          </h5>
           <button type="button" class="btn-close" @click="cerrarModal" />
         </div>
 
@@ -27,7 +29,7 @@
               v-model="reto.descripcion"
               class="form-control"
               rows="3"
-            />
+            ></textarea>
           </div>
 
           <!-- Estado -->
@@ -197,7 +199,7 @@
             @click="guardarReto"
             :disabled="!reto.nombreReto || !reto.estado"
           >
-            Guardar reto
+            {{ isEditing ? "Actualizar reto" : "Guardar reto" }}
           </button>
         </div>
       </div>
@@ -206,15 +208,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { serverTimestamp } from "firebase/firestore";
+import { ref, onMounted, watch, computed } from "vue";
 import Dropdown from "bootstrap/js/dist/dropdown";
-import { crearReto } from "../../services/challengeServices";
+import { crearReto, actualizarReto } from "../../services/challengeServices";
 
 // Props y emits
 const props = defineProps({
   visible: Boolean,
   empresa: Object,
+  reto: Object,
 });
 const emit = defineEmits(["cerrar", "guardado"]);
 
@@ -232,6 +234,9 @@ const reto = ref({
   programacion: [],
   lenguajes: [],
 });
+
+const isEditing = computed(() => !!props.reto?.id);
+console.log("Edit", isEditing.value);
 
 const tecnologiasDisponibles = [
   "React",
@@ -318,6 +323,23 @@ const cerrarModal = () => {
   emit("cerrar");
 };
 
+watch(
+  () => props.visible,
+  (nuevoVisible) => {
+    if (nuevoVisible) {
+      reto.value = {
+        nombreReto: props.reto?.nombreReto || "",
+        descripcion: props.reto?.descripcion || "",
+        estado: props.reto?.estado || "",
+        tecnologias: [...(props.reto?.tecnologias || [])],
+        programacion: [...(props.reto?.programacion || [])],
+        lenguajes: [...(props.reto?.lenguajes || [])],
+      };
+    }
+  },
+  { immediate: true }
+);
+
 // Guardar reto
 const guardarReto = async () => {
   try {
@@ -326,10 +348,13 @@ const guardarReto = async () => {
       idUsuarioEmpresa: props.empresa?.uid || null,
     };
 
-    const id = await crearReto(nuevoReto);
-    console.log("Reto creado con ID:", id);
-
-    emit("guardado", { ...nuevoReto, id });
+    if (isEditing.value) {
+      await actualizarReto(props.reto?.id, nuevoReto);
+      emit("guardado", nuevoReto);
+    } else {
+      const id = await crearReto(nuevoReto);
+      emit("guardado", { ...nuevoReto, id });
+    }
     cerrarModal();
 
     reto.value = {
@@ -339,6 +364,7 @@ const guardarReto = async () => {
       tecnologias: [],
       programacion: [],
       lenguajes: [],
+      id: null,
     };
   } catch (error) {
     console.error("Error al guardar el reto:", error);

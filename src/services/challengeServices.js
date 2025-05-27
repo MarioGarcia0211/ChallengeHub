@@ -6,6 +6,8 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 
 //Funcion para crear un retp
@@ -41,6 +43,20 @@ export const obtenerRetosPorEmpresa = async (empresa) => {
     return retos;
   } catch (error) {
     console.error("Error al obtener los retos:", error);
+    throw error;
+  }
+};
+
+// Función para actualizar un reto existente
+export const actualizarReto = async (idReto, datosActualizados) => {
+  try {
+    const retoRef = doc(db, "retos", idReto);
+    await updateDoc(retoRef, {
+      ...datosActualizados,
+      fechaActualizacion: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error("Error al actualizar el reto:", error);
     throw error;
   }
 };
