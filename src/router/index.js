@@ -11,6 +11,8 @@ import CompanyProfile from "../views/CompanyProfile.vue";
 import CompanyInfo from "../components/CompanyProfile/CompanyInfo.vue";
 import CompanyChallenge from "../components/CompanyProfile/CompanyChallenge.vue";
 import CompanyVancant from "../components/CompanyProfile/CompanyVancant.vue";
+import { children } from "bootstrap/js/dist/dom/selector-engine";
+import UserInfo from "../components/UserProfile/UserInfo.vue";
 
 const routes = [
   { path: "/login", name: "login", component: Login },
@@ -20,6 +22,8 @@ const routes = [
     name: "userProfile",
     component: UserProfile,
     meta: { requiresAuth: true, role: "persona" },
+    redirect: "/user-profile/profile",
+    children: [{ path: "profile", name: "", component: UserInfo, props: true }],
   },
   {
     path: "/company-profile",
