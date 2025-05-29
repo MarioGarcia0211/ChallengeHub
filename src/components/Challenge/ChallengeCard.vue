@@ -1,9 +1,13 @@
 <template>
-  <div class="card shadow rounded overflow-hidden h-100 d-flex flex-column">
+  <div
+    @click="abrirModal"
+    :title="'Haz clic para ver más detalles del reto'"
+    class="card shadow rounded overflow-hidden h-100 d-flex flex-column"
+  >
     <div class="card-body d-flex flex-column h-100">
       <div class="d-flex align-items-center mb-3">
         <img
-          src=""
+          :src="reto.empresa.logo"
           alt="Logo de la empresa"
           class="img-thumbnail me-3"
           style="width: 60px; height: 60px; object-fit: cover"
@@ -87,10 +91,13 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import { obtenerTipoUsuario } from "../../services/userServices";
 defineProps({
   reto: Object,
 });
+
+function abrirModal() {
+  console.log("Debe abrirse el modal");
+}
 </script>
 
 <style scoped>
@@ -115,5 +122,19 @@ defineProps({
   -webkit-line-clamp: 3; /* número de líneas visibles */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+}
+
+.card:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 </style>

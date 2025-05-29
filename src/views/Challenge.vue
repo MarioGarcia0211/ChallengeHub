@@ -33,7 +33,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { obtenerDatosUsuario } from "../services/userServices";
-import { obtenerTodosLosRetos } from "../services/challengeServices";
+import {
+  obtenerTodosLosRetos,
+  obtenerRetosConEmpresa,
+} from "../services/challengeServices";
 import ChallengeCard from "../components/Challenge/ChallengeCard.vue";
 
 import Navbar from "../components/Navbar/Navbar.vue";
@@ -50,7 +53,8 @@ onMounted(async () => {
     console.log("Datos del usuario:", persona.value);
 
     // Obtener todos los retos disponibles
-    retos.value = await obtenerTodosLosRetos();
+    // retos.value = await obtenerTodosLosRetos();
+    retos.value = await obtenerRetosConEmpresa();
     console.log("Retos disponibles:", retos.value);
   } catch (error) {
     console.error("Error al cargar datos:", error);

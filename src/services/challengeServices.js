@@ -10,6 +10,7 @@ import {
   updateDoc,
   deleteDoc,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
 
 //Funcion para crear un retp
@@ -94,6 +95,49 @@ export const obtenerTodosLosRetos = async () => {
     return retos;
   } catch (error) {
     console.error("Error al obtener todos los retos:", error);
+    throw error;
+  }
+};
+
+export const obtenerRetosConEmpresa = async () => {
+  try {
+    const q = query(collection(db, "retos"), orderBy("fechaRegistro", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    const retos = [];
+
+    for (const documento of querySnapshot.docs) {
+      const retoData = documento.data();
+      const empresaId = retoData.idUsuarioEmpresa;
+
+      let empresaData = null;
+
+      try {
+        const empresaDocRef = doc(
+          db,
+          "usuarios",
+          empresaId,
+          "empresa",
+          "datos"
+        );
+        const empresaDocSnap = await getDoc(empresaDocRef);
+        if (empresaDocSnap.exists()) {
+          empresaData = empresaDocSnap.data();
+        }
+      } catch (e) {
+        console.warn(`Error obteniendo empresa para usuario ${empresaId}:`, e);
+      }
+
+      retos.push({
+        id: documento.id,
+        ...retoData,
+        empresa: empresaData, // se agrega la info de la empresa
+      });
+    }
+
+    return retos;
+  } catch (error) {
+    console.error("Error al obtener retos con datos de empresa:", error);
     throw error;
   }
 };
