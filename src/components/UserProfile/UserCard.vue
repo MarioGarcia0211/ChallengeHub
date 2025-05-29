@@ -46,14 +46,14 @@
           <div
             class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2"
           >
-            <button class="btn custom-btn btn-sm">
+            <router-link to="/challenge" class="btn custom-btn btn-sm">
               <i class="bi bi-trophy me-1"></i>
               Retos Disponibles
-            </button>
-            <button class="btn custom-btn btn-sm">
+            </router-link>
+            <router-link to="/vacant" class="btn custom-btn btn-sm">
               <i class="bi bi-briefcase me-1"></i>
               Ver Vacantes
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -113,12 +113,13 @@ const tipoDocumentoAbreviado = computed(() => {
 .custom-btn:hover {
   background-color: #8b5cf6;
   color: white;
+  text-decoration: none;
 }
 
 .custom-badge {
-  background: #8b5cf6;
-  color: white;
-  font-size: 0.75rem;
+  background-color: #ede9fe;
+  color: #8b5cf6;
+  font-weight: 500;
   padding: 0.4em 0.6em;
   border-radius: 1rem;
 }

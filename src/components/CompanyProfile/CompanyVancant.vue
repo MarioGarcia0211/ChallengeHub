@@ -51,6 +51,7 @@ import { ref, watch } from "vue";
 import CompanyVacantForm from "./CompanyVacantForm.vue";
 import CompanyVacantCard from "./CompanyVacantCard.vue";
 import { obtenerVacantesPorEmpresa } from "../../services/vacantServices";
+import { eliminarVacantePorID } from "../../services/vacantServices";
 
 const props = defineProps({
   empresa: Object,
@@ -95,7 +96,7 @@ const editarVacante = (vacante) => {
 const eliminarVacante = async (vacante) => {
   if (confirm(`¿Estás seguro de eliminar el vacante "${vacante.id}"?`)) {
     try {
-      await eliminarRetoPorID(vacante.id);
+      await eliminarVacantePorID(vacante.id);
       console.log("vacante eliminado:", vacante);
       await cargarVacantes();
     } catch (error) {

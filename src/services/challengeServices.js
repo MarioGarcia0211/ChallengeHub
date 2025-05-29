@@ -75,3 +75,25 @@ export const eliminarRetoPorID = async (idReto) => {
     throw error;
   }
 };
+
+// Función para obtener todos los retos
+export const obtenerTodosLosRetos = async () => {
+  try {
+    const q = query(
+      collection(db, "retos"),
+      orderBy("fechaRegistro", "desc") // ordenados del más reciente al más antiguo
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const retos = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return retos;
+  } catch (error) {
+    console.error("Error al obtener todos los retos:", error);
+    throw error;
+  }
+};

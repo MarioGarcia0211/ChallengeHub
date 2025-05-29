@@ -6,12 +6,12 @@
         <div class="card-body">
           <h6 class="section-title">INFORMACIÓN</h6>
           <p class="mb-2">
-            <i class="bi bi-flag-fill me-2 icon"></i>
+            <i class="bi bi-flag me-2 icon"></i>
             <strong>País:</strong> {{ persona.pais || "No especificado" }}
           </p>
 
           <p class="mb-2">
-            <i class="bi bi-lightbulb-fill me-2 icon"></i>
+            <i class="bi bi-lightbulb me-2 icon"></i>
             <strong>Habilidades:</strong>
             <span v-if="persona.habilidades?.length" class="d-block mt-1">
               <span
@@ -43,11 +43,11 @@
           <!-- Contactos -->
           <h6 class="section-title mt-4">CONTACTOS</h6>
           <p class="mb-2">
-            <i class="bi bi-telephone-fill me-2 icon"></i>
+            <i class="bi bi-telephone me-2 icon"></i>
             <strong>Teléfono:</strong> {{ persona.whatsapp || "No disponible" }}
           </p>
           <p class="mb-0">
-            <i class="bi bi-envelope-fill me-2 icon"></i>
+            <i class="bi bi-envelope me-2 icon"></i>
             <strong>Correo:</strong> {{ persona.correo || "No disponible" }}
           </p>
         </div>

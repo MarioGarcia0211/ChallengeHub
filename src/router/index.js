@@ -13,8 +13,13 @@ import CompanyChallenge from "../components/CompanyProfile/CompanyChallenge.vue"
 import CompanyVancant from "../components/CompanyProfile/CompanyVancant.vue";
 import { children } from "bootstrap/js/dist/dom/selector-engine";
 import UserInfo from "../components/UserProfile/UserInfo.vue";
+import Challenge from "../views/Challenge.vue";
 
 const routes = [
+  {
+    path: "/",
+    redirect: "/login",
+  },
   { path: "/login", name: "login", component: Login },
   { path: "/register", name: "register", component: Register },
   {
@@ -37,10 +42,10 @@ const routes = [
       { path: "vacant", name: "", component: CompanyVancant },
     ],
   },
-
   {
-    path: "/",
-    redirect: "/login",
+    path: "/challenge",
+    name: "",
+    component: Challenge,
   },
 ];
 
