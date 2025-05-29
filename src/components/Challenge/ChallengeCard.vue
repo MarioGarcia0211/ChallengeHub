@@ -87,16 +87,32 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal detalles -->
+  <ChallengeModal
+    :visible="mostrarModal"
+    :reto="reto"
+    @cerrar="mostrarModal = false"
+  />
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import ChallengeModal from "./ChallengeModal.vue";
+
+const mostrarModal = ref(false);
+
+defineOptions({
+  inheritAttrs: false,
+});
+
 defineProps({
   reto: Object,
 });
 
 function abrirModal() {
   console.log("Debe abrirse el modal");
+  mostrarModal.value = true;
 }
 </script>
 
