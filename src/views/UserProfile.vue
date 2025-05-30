@@ -12,6 +12,7 @@
       <router-view :persona="persona" />
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -19,6 +20,7 @@ import { ref, onMounted, computed } from "vue";
 import { obtenerDatosUsuario } from "../services/userServices";
 
 import Navbar from "../components/Navbar/Navbar.vue";
+import Footer from "../components/Footer/Footer.vue";
 import UserCard from "../components/UserProfile/UserCard.vue";
 import UserTabs from "../components/UserProfile/UserTabs.vue";
 

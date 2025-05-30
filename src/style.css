@@ -3,7 +3,8 @@ body.bg-login {
 }
 
 body.bg-default {
-  background-color: #e2e7f8;
+  background-color: #f8f7fa;
+  /* background-color: #e2e7f8; */
 }
 
 .toast-success .swal2-timer-progress-bar {
