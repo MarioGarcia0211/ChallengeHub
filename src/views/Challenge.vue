@@ -37,7 +37,7 @@
           v-for="reto in retos"
           :key="reto.id"
         >
-          <ChallengeCard :reto="reto" class="w-100 h-100" />
+          <ChallengeCard :reto="reto" :persona="persona" class="w-100 h-100" />
         </div>
       </div>
       <p v-else>No hay retos disponibles en este momento.</p>

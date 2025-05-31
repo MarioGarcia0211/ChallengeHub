@@ -141,3 +141,37 @@ export const obtenerRetosConEmpresa = async () => {
     throw error;
   }
 };
+
+export const registrarParticipacion = async (idReto, idPersona) => {
+  try {
+    const participacionData = {
+      idReto,
+      idPersona,
+      estado: "pendiente",
+      fechaRegistro: serverTimestamp(),
+    };
+
+    // Subcolección dentro del reto
+    const subcoleccionRef = collection(db, `retos/${idReto}/postulacionReto`);
+    await addDoc(subcoleccionRef, participacionData);
+
+    console.log("Participación registrada exitosamente.");
+  } catch (error) {
+    console.error("Error al registrar la participación:", error);
+    throw error;
+  }
+};
+
+export const verificarRegistro = async (idReto, idPersona) => {
+  try {
+    const participantesRef = collection(db, `retos/${idReto}/postulacionReto`);
+    const q = query(participantesRef, where("idPersona", "==", idPersona));
+
+    const querySnapshot = await getDocs(q);
+
+    return !querySnapshot.empty; // true si ya está registrado
+  } catch (error) {
+    console.error("Error al verificar la participación:", error);
+    throw error;
+  }
+};

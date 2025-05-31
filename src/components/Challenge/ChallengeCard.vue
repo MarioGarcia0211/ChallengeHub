@@ -76,14 +76,25 @@
         </div>
       </div>
 
-      <div class="mt-auto text-end">
-        Estado:
-        <span
-          class="badge"
-          :class="reto.estado === 'abierto' ? 'bg-success' : 'bg-danger'"
-        >
-          {{ reto.estado }}
-        </span>
+      <div class="mt-auto d-flex justify-content-between align-items-center">
+        <div>
+          Estado:
+          <span
+            class="badge"
+            :class="reto.estado === 'abierto' ? 'bg-success' : 'bg-danger'"
+          >
+            {{ reto.estado }}
+          </span>
+        </div>
+
+        <div v-if="estaParticipando">
+          <span
+            class="badge bg-primary"
+            title="Estás participando en este reto"
+          >
+            Participando
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -92,28 +103,57 @@
   <ChallengeModal
     :visible="mostrarModal"
     :reto="reto"
+    :persona="persona"
     @cerrar="mostrarModal = false"
+    @registroExitoso="chequearParticipacion"
   />
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import ChallengeModal from "./ChallengeModal.vue";
+import { verificarRegistro } from "../../services/challengeServices";
 
 const mostrarModal = ref(false);
+const estaParticipando = ref(false);
 
 defineOptions({
   inheritAttrs: false,
 });
 
-defineProps({
+const props = defineProps({
   reto: Object,
+  persona: Object,
 });
 
 function abrirModal() {
   console.log("Debe abrirse el modal");
   mostrarModal.value = true;
 }
+
+async function chequearParticipacion() {
+  if (props.reto?.id && props.persona?.uid) {
+    try {
+      estaParticipando.value = await verificarRegistro(
+        props.reto.id,
+        props.persona.uid
+      );
+    } catch (error) {
+      console.error("Error al verificar participación:", error);
+      estaParticipando.value = false;
+    }
+  } else {
+    estaParticipando.value = false;
+  }
+}
+
+watch(
+  () => [props.reto, props.persona],
+  () => {
+    chequearParticipacion();
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>

@@ -130,7 +130,22 @@
 
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
-          <button class="btn btn-primary">Participar</button>
+
+          <button
+            v-if="!estaRegistrado"
+            class="btn btn-primary"
+            @click="participar"
+            :disabled="reto.estado.toLowerCase() === 'cerrado'"
+            :title="
+              reto.estado.toLowerCase() === 'cerrado'
+                ? 'No puedes participar en retos cerrados'
+                : ''
+            "
+          >
+            Participar
+          </button>
+
+          <button v-else class="btn btn-success" disabled>Registrado</button>
         </div>
       </div>
     </div>
@@ -138,26 +153,74 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
+import {
+  registrarParticipacion,
+  verificarRegistro,
+} from "../../services/challengeServices";
 
 const props = defineProps({
   visible: Boolean,
   reto: Object,
+  persona: Object,
 });
 
-const emit = defineEmits(["cerrar"]);
-
-const cerrarModal = () => {
-  emit("cerrar");
-  // Opcional: resetear estados al cerrar
-  mostrarLenguajesCompletos.value = false;
-  mostrarTecnologiasCompletas.value = false;
-  mostrarProgramacionCompleta.value = false;
-};
+const emit = defineEmits(["cerrar", "registroExitoso"]);
 
 const mostrarLenguajesCompletos = ref(false);
 const mostrarTecnologiasCompletas = ref(false);
 const mostrarProgramacionCompleta = ref(false);
+
+const estaRegistrado = ref(false);
+
+const cerrarModal = () => {
+  emit("cerrar");
+  mostrarLenguajesCompletos.value = false;
+  mostrarTecnologiasCompletas.value = false;
+  mostrarProgramacionCompleta.value = false;
+  estaRegistrado.value = false;
+};
+
+// Cada vez que el modal se abra o cambien reto o persona, verificamos si está registrado
+watch(
+  () => [props.visible, props.reto, props.persona],
+  async ([visible, reto, persona]) => {
+    if (visible && reto && persona) {
+      try {
+        estaRegistrado.value = await verificarRegistro(reto.id, persona.uid);
+      } catch (error) {
+        console.error("Error verificando registro:", error);
+      }
+    } else {
+      estaRegistrado.value = false;
+    }
+  },
+  { immediate: true }
+);
+
+const participar = async () => {
+  const idPersona = props.persona?.uid;
+  const idReto = props.reto?.id;
+
+  try {
+    if (estaRegistrado.value) {
+      alert("Ya estás registrado en este reto.");
+      return;
+    }
+
+    if (props.reto?.estado?.toLowerCase() === "cerrado") {
+      alert("Este reto ya está cerrado. No puedes registrarte.");
+      return;
+    }
+    await registrarParticipacion(idReto, idPersona);
+    emit("registroExitoso");
+    estaRegistrado.value = true;
+    alert("Te has registrado exitosamente en el reto.");
+  } catch (error) {
+    console.error("Error al participar en el reto:", error);
+    alert("Ocurrió un error al registrar tu participación.");
+  }
+};
 </script>
 
 <style scoped>
