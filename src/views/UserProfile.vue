@@ -48,7 +48,7 @@ const loading = ref(true);
 onMounted(async () => {
   try {
     persona.value = await obtenerDatosUsuario();
-    console.log("Datos del persona:", persona.value);
+    //console.log("Datos del persona:", persona.value);
   } catch (error) {
     console.error("Error cargando persona:", error);
   } finally {

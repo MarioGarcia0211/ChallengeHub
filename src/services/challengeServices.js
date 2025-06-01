@@ -11,6 +11,7 @@ import {
   deleteDoc,
   orderBy,
   getDoc,
+  collectionGroup,
 } from "firebase/firestore";
 
 //Funcion para crear un retp
@@ -172,6 +173,73 @@ export const verificarRegistro = async (idReto, idPersona) => {
     return !querySnapshot.empty; // true si ya está registrado
   } catch (error) {
     console.error("Error al verificar la participación:", error);
+    throw error;
+  }
+};
+
+export const obtenerRetosPorPersonaYEstado = async (
+  idPersona,
+  estado = null
+) => {
+  try {
+    // Construir los filtros dinámicamente
+    let filtros = [where("idPersona", "==", idPersona)];
+
+    if (estado !== null) {
+      filtros.push(where("estado", "==", estado));
+    }
+
+    const q = query(collectionGroup(db, "postulacionReto"), ...filtros);
+    const querySnapshot = await getDocs(q);
+
+    const retosParticipando = [];
+
+    for (const docPostulacion of querySnapshot.docs) {
+      const dataPostulacion = docPostulacion.data();
+      const retoId = dataPostulacion.idReto;
+
+      // Obtener los datos del reto
+      const retoDocRef = doc(db, "retos", retoId);
+      const retoDocSnap = await getDoc(retoDocRef);
+
+      if (retoDocSnap.exists()) {
+        const retoData = retoDocSnap.data();
+        const empresaId = retoData.idUsuarioEmpresa;
+
+        let empresaData = null;
+
+        try {
+          const empresaDocRef = doc(
+            db,
+            "usuarios",
+            empresaId,
+            "empresa",
+            "datos"
+          );
+          const empresaDocSnap = await getDoc(empresaDocRef);
+
+          if (empresaDocSnap.exists()) {
+            empresaData = empresaDocSnap.data();
+          }
+        } catch (e) {
+          console.warn(
+            `Error obteniendo empresa para usuario ${empresaId}:`,
+            e
+          );
+        }
+
+        retosParticipando.push({
+          id: retoDocSnap.id,
+          ...retoData,
+          estadoParticipacion: dataPostulacion.estado,
+          empresa: empresaData, // se agrega la información de la empresa
+        });
+      }
+    }
+
+    return retosParticipando;
+  } catch (error) {
+    console.error("Error al obtener los retos por persona y estado:", error);
     throw error;
   }
 };
