@@ -21,6 +21,7 @@ import CompanyChallenge from "../components/CompanyProfile/CompanyChallenge.vue"
 import CompanyVancant from "../components/CompanyProfile/CompanyVancant.vue";
 import UserInfo from "../components/UserProfile/UserInfo.vue";
 import UserMyChallenge from "../components/UserProfile/UserMyChallenge.vue";
+import CompanyCandidate from "../components/CompanyProfile/CompanyCandidate.vue";
 
 // Definición de rutas
 const routes = [
@@ -55,6 +56,7 @@ const routes = [
       { path: "profile", name: "", component: CompanyInfo, props: true }, // Info de la empresa
       { path: "challenge", name: "", component: CompanyChallenge }, // Retos publicados por la empresa
       { path: "vacant", name: "", component: CompanyVancant }, // Vacantes
+      { path: "candidatos", name: "", component: CompanyCandidate },
     ],
   },
 

@@ -15,20 +15,14 @@
 
     <!-- Contenedor de componente dinámico -->
     <div class="mt-3">
-      <component :is="getComponent(activeTab)" :persona="persona" />
+      <component :is="getComponent(activeTab)" :empresa="empresa" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-
-// Importa tus componentes
-import Pendiente from "../UserTabsChallenge/Pendiente.vue";
-import Revision from "../UserTabsChallenge/Revision.vue";
-import Proceso from "../UserTabsChallenge/Proceso.vue";
-import Aceptado from "../UserTabsChallenge/Aceptado.vue";
-import Rechazado from "../UserTabsChallenge/Rechazado.vue";
+import Pendiente from "../CompanyTabsCandidate/Pendiente.vue";
 
 // Lista de tabs con nombre e identificación
 const tabs = [
@@ -40,7 +34,7 @@ const tabs = [
 ];
 
 const props = defineProps({
-  persona: Object,
+  empresa: Object,
 });
 
 // Tab activa por defecto
