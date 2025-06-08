@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 import { obtenerPostulacionRetoPorEmpresa } from "../../services/candidateServices.js";
 import CompanyCandidateTable from "../CompanyProfile/CompanyCandidateTable.vue";
 
@@ -31,27 +31,36 @@ const props = defineProps({
 
 const retos = ref([]);
 const loading = ref(true);
+let unsubscribe = null;
 
 watch(
   () => props.empresa,
   async (nuevaEmpresa) => {
     if (nuevaEmpresa?.uid) {
       loading.value = true;
-      try {
-        const estado = "pendiente";
-        retos.value = await obtenerPostulacionRetoPorEmpresa(
-          nuevaEmpresa.uid,
-          estado
-        );
-        console.log("Retos:", retos.value);
-      } catch (error) {
-        console.error("Error al obtener retos:", error);
-      } finally {
-        loading.value = false;
-      }
+
+      if (unsubscribe) unsubscribe();
+
+      unsubscribe = await obtenerPostulacionRetoPorEmpresa(
+        nuevaEmpresa.uid,
+        "pendiente",
+        (nuevasPostulaciones) => {
+          retos.value =
+            typeof nuevasPostulaciones === "function"
+              ? nuevasPostulaciones(retos.value)
+              : nuevasPostulaciones;
+
+          loading.value = false;
+          console.log("Retos pendientes:", retos.value);
+        }
+      );
     }
   },
   { immediate: true }
 );
+
+onUnmounted(() => {
+  if (unsubscribe) unsubscribe();
+});
 </script>
 <style></style>

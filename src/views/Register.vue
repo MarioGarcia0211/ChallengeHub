@@ -173,7 +173,7 @@ const registrarEmpresa = async () => {
 };
 </script>
 
-<style>
+<style scoped>
 .container-register {
   display: flex;
   justify-content: center;

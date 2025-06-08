@@ -81,7 +81,7 @@ const login = async () => {
 };
 </script>
 
-<style>
+<style scoped>
 .container-login {
   display: flex;
   justify-content: center;

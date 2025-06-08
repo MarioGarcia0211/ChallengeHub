@@ -12,18 +12,83 @@ import {
   orderBy,
   getDoc,
   collectionGroup,
+  onSnapshot
 } from "firebase/firestore";
+
+// export const obtenerPostulacionRetoPorEmpresa = async (
+//   empresaId,
+//   estadoFiltrado
+// ) => {
+//   try {
+//     const retosRef = collection(db, "retos");
+//     const q = query(retosRef, where("idUsuarioEmpresa", "==", empresaId));
+//     const retosSnapshot = await getDocs(q);
+
+//     const postulaciones = [];
+
+//     for (const retoDoc of retosSnapshot.docs) {
+//       const retoId = retoDoc.id;
+//       const retoData = retoDoc.data();
+
+//       const postulacionesRef = collection(
+//         db,
+//         "retos",
+//         retoId,
+//         "postulacionReto"
+//       );
+//       const postulacionesSnap = await getDocs(postulacionesRef);
+
+//       for (const postDoc of postulacionesSnap.docs) {
+//         const postData = postDoc.data();
+
+//         // Filtrar por estado
+//         if (postData.estado !== estadoFiltrado) continue;
+
+//         // Obtener datos del usuario desde la subcolección "persona"
+//         const userRef = doc(
+//           db,
+//           "usuarios",
+//           postData.idPersona,
+//           "persona",
+//           "datos"
+//         );
+//         const userSnap = await getDoc(userRef);
+//         const userData = userSnap.exists() ? userSnap.data() : null;
+
+//         postulaciones.push({
+//           id: postDoc.id,
+//           ...postData,
+//           retoId,
+//           datosReto: {
+//             id: retoId,
+//             ...retoData,
+//           },
+//           datosUsuario: {
+//             id: postData.idPersona,
+//             ...userData,
+//           },
+//         });
+//       }
+//     }
+
+//     return postulaciones;
+//   } catch (error) {
+//     console.error("Error al obtener postulaciones:", error);
+//     return [];
+//   }
+// };
 
 export const obtenerPostulacionRetoPorEmpresa = async (
   empresaId,
-  estadoFiltrado
+  estadoFiltrado,
+  callback
 ) => {
   try {
     const retosRef = collection(db, "retos");
     const q = query(retosRef, where("idUsuarioEmpresa", "==", empresaId));
     const retosSnapshot = await getDocs(q);
 
-    const postulaciones = [];
+    const unsubscribers = [];
 
     for (const retoDoc of retosSnapshot.docs) {
       const retoId = retoDoc.id;
@@ -35,44 +100,55 @@ export const obtenerPostulacionRetoPorEmpresa = async (
         retoId,
         "postulacionReto"
       );
-      const postulacionesSnap = await getDocs(postulacionesRef);
 
-      for (const postDoc of postulacionesSnap.docs) {
-        const postData = postDoc.data();
+      const unsubscribe = onSnapshot(postulacionesRef, async (snapshot) => {
+        const nuevasPostulaciones = [];
 
-        // Filtrar por estado
-        if (postData.estado !== estadoFiltrado) continue;
+        for (const postDoc of snapshot.docs) {
+          const postData = postDoc.data();
 
-        // Obtener datos del usuario desde la subcolección "persona"
-        const userRef = doc(
-          db,
-          "usuarios",
-          postData.idPersona,
-          "persona",
-          "datos"
-        );
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.exists() ? userSnap.data() : null;
+          if (postData.estado !== estadoFiltrado) continue;
 
-        postulaciones.push({
-          id: postDoc.id,
-          ...postData,
-          retoId,
-          datosReto: {
-            id: retoId,
-            ...retoData,
-          },
-          datosUsuario: {
-            id: postData.idPersona,
-            ...userData,
-          },
+          // Obtener datos del usuario
+          const userRef = doc(
+            db,
+            "usuarios",
+            postData.idPersona,
+            "persona",
+            "datos"
+          );
+          const userSnap = await getDoc(userRef);
+          const userData = userSnap.exists() ? userSnap.data() : null;
+
+          nuevasPostulaciones.push({
+            id: postDoc.id,
+            ...postData,
+            retoId,
+            datosReto: {
+              id: retoId,
+              ...retoData,
+            },
+            datosUsuario: {
+              id: postData.idPersona,
+              ...userData,
+            },
+          });
+        }
+
+        callback((prev) => {
+          // Reemplaza solo las postulaciones de este reto
+          const otras = prev.filter((p) => p.retoId !== retoId);
+          return [...otras, ...nuevasPostulaciones];
         });
-      }
+      });
+
+      unsubscribers.push(unsubscribe);
     }
 
-    return postulaciones;
+    // Devuelve función para cancelar todos los listeners
+    return () => unsubscribers.forEach((unsub) => unsub());
   } catch (error) {
-    console.error("Error al obtener postulaciones:", error);
-    return [];
+    console.error("Error en la escucha de postulaciones:", error);
+    return () => {};
   }
 };
