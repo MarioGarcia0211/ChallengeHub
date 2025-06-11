@@ -50,16 +50,23 @@
               <img
                 :src="reto?.datosUsuario?.fotoPerfil"
                 alt="Foto de perfil"
-                class="img-fluid object-fit-cover me-3 rounded"
-                style="width: 80px; height: 80px"
+                class="me-3 rounded img-cuadrada"
               />
-              <div>
-                <p class="mb-1 text-muted">
+              <div class="d-flex flex-column justify-content-start">
+                <!-- Nombre completo -->
+                <h5 class="modal-title mb-1">
+                  {{ reto?.datosUsuario.nombres }}
+                  {{ reto?.datosUsuario.apellidos }}
+                </h5>
+
+                <!-- Documento -->
+                <p class="text-muted mb-2">
                   {{ tipoDocumentoAbreviado }}
                   {{ reto?.datosUsuario.numeroDocumento }}
                 </p>
 
-                <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
+                <!-- Preferencias de trabajo -->
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                   <i class="bi bi-building-fill-gear icon"></i>
                   <span
                     v-for="(preferencia, index) in reto?.datosUsuario
@@ -71,13 +78,14 @@
                   </span>
                 </div>
 
+                <!-- Ciudad y país
                 <div class="d-flex align-items-center gap-2 text-muted">
                   <i class="bi bi-geo-alt-fill icon"></i>
                   <span
                     >{{ reto?.datosUsuario.ciudad }},
                     {{ reto?.datosUsuario.pais }}</span
                   >
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -146,10 +154,101 @@
 
           <!-- DATOS DEL RETO -->
           <div v-if="activeTab === 'reto'">
-            <p><strong>Nombre del reto:</strong> {{ reto.nombre }}</p>
-            <p><strong>Descripción:</strong> {{ reto.descripcion }}</p>
-            <p><strong>Fecha límite:</strong> {{ reto.fechaLimite }}</p>
-            <!-- Agrega más campos del reto si los tienes -->
+            <p>
+              <strong>Nombre del reto:</strong> {{ reto?.datosReto.nombreReto }}
+            </p>
+            <p>
+              <strong>Descripción:</strong> {{ reto?.datosReto.descripcion }}
+            </p>
+            <p>
+              <strong>Fecha publicación:</strong>
+              {{ formatearFecha(reto?.datosReto.fechaRegistro) }}
+            </p>
+
+            <!-- Lenguajes -->
+            <p class="mt-3"><strong>Lenguajes:</strong></p>
+            <div>
+              <span
+                v-for="(lang, index) in mostrarLenguajesCompletos
+                  ? reto?.datosReto.lenguajes
+                  : reto?.datosReto.lenguajes.slice(0, 3)"
+                :key="'lang-' + index"
+                class="badge me-1 soft-badge"
+              >
+                {{ lang }}
+              </span>
+              <span
+                v-if="reto?.datosReto.lenguajes.length > 3"
+                class="badge soft-badge extra-badge"
+                style="cursor: pointer"
+                @click="mostrarLenguajesCompletos = !mostrarLenguajesCompletos"
+              >
+                {{
+                  mostrarLenguajesCompletos
+                    ? "Ver menos"
+                    : "+" + (reto?.datosReto.lenguajes.length - 3)
+                }}
+              </span>
+            </div>
+
+            <!-- Tecnologías -->
+            <p><strong>Tecnologías:</strong></p>
+            <div>
+              <span
+                v-for="(tec, index) in mostrarTecnologiasCompletas
+                  ? reto?.datosReto.tecnologias
+                  : reto?.datosReto.tecnologias.slice(0, 3)"
+                :key="'tec-' + index"
+                class="badge me-1 soft-badge"
+              >
+                {{ tec }}
+              </span>
+              <span
+                v-if="reto?.datosReto.tecnologias.length > 3"
+                class="badge soft-badge extra-badge"
+                style="cursor: pointer"
+                @click="
+                  mostrarTecnologiasCompletas = !mostrarTecnologiasCompletas
+                "
+              >
+                {{
+                  mostrarTecnologiasCompletas
+                    ? "Ver menos"
+                    : "+" + (reto?.datosReto.tecnologias.length - 3)
+                }}
+              </span>
+            </div>
+
+            <!-- Programación -->
+            <p class="mt-3"><strong>Programación:</strong></p>
+            <div>
+              <span
+                v-for="(prog, index) in mostrarProgramacionCompleta
+                  ? reto?.datosReto.programacion
+                  : reto?.datosReto.programacion.slice(0, 3)"
+                :key="'prog-' + index"
+                class="badge me-1 soft-badge"
+              >
+                {{ prog }}
+              </span>
+              <span
+                v-if="reto?.datosReto.programacion.length > 3"
+                class="badge soft-badge extra-badge"
+                style="cursor: pointer"
+                @click="
+                  mostrarProgramacionCompleta = !mostrarProgramacionCompleta
+                "
+              >
+                {{
+                  mostrarProgramacionCompleta
+                    ? "Ver menos"
+                    : "+" + (reto?.datosReto.programacion.length - 3)
+                }}
+              </span>
+            </div>
+
+            <!-- Estado -->
+            <p><strong>Estado: </strong>{{ reto?.datosReto.estado }}</p>
           </div>
         </div>
 
@@ -180,17 +279,32 @@ const tipoDocumentoAbreviado = computed(() => {
   return mapa[props.reto?.datosUsuario.tipoDocumento];
 });
 
-const emit = defineEmits(["cerrar", "registroExitoso"]);
+const emit = defineEmits(["cerrar"]);
 const activeTab = ref("datos");
 const mostrarHabilidadesCompletas = ref(false);
 const mostrarTecnologiasCompletas = ref(false);
 const mostrarProgramacionCompleta = ref(false);
+const mostrarLenguajesCompletos = ref(false);
 
 const cerrarModal = () => {
   emit("cerrar");
   mostrarHabilidadesCompletas.value = false;
   mostrarTecnologiasCompletas.value = false;
   mostrarProgramacionCompleta.value = false;
+  mostrarLenguajesCompletos.value = false;
+};
+
+const formatearFecha = (timestamp) => {
+  if (!timestamp?.toDate) return "Fecha no válida";
+  const fecha = timestamp.toDate();
+  return fecha.toLocaleString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
 </script>
 
@@ -214,5 +328,12 @@ const cerrarModal = () => {
 .icon {
   color: #8b5cf6;
   font-size: 1.1rem;
+}
+
+.img-cuadrada {
+  aspect-ratio: 1 / 1;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100px; /* Ajusta si quieres un límite */
 }
 </style>

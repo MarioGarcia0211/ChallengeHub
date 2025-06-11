@@ -23,6 +23,10 @@
 <script setup>
 import { ref } from "vue";
 import Pendiente from "../CompanyTabsCandidate/Pendiente.vue";
+import Revision from "../CompanyTabsCandidate/Revision.vue";
+import Proceso from "../CompanyTabsCandidate/Proceso.vue";
+import Aceptado from "../CompanyTabsCandidate/Aceptado.vue";
+import Rechazado from "../CompanyTabsCandidate/Rechazado.vue";
 
 // Lista de tabs con nombre e identificación
 const tabs = [

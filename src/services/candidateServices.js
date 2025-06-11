@@ -15,69 +15,6 @@ import {
   onSnapshot
 } from "firebase/firestore";
 
-// export const obtenerPostulacionRetoPorEmpresa = async (
-//   empresaId,
-//   estadoFiltrado
-// ) => {
-//   try {
-//     const retosRef = collection(db, "retos");
-//     const q = query(retosRef, where("idUsuarioEmpresa", "==", empresaId));
-//     const retosSnapshot = await getDocs(q);
-
-//     const postulaciones = [];
-
-//     for (const retoDoc of retosSnapshot.docs) {
-//       const retoId = retoDoc.id;
-//       const retoData = retoDoc.data();
-
-//       const postulacionesRef = collection(
-//         db,
-//         "retos",
-//         retoId,
-//         "postulacionReto"
-//       );
-//       const postulacionesSnap = await getDocs(postulacionesRef);
-
-//       for (const postDoc of postulacionesSnap.docs) {
-//         const postData = postDoc.data();
-
-//         // Filtrar por estado
-//         if (postData.estado !== estadoFiltrado) continue;
-
-//         // Obtener datos del usuario desde la subcolección "persona"
-//         const userRef = doc(
-//           db,
-//           "usuarios",
-//           postData.idPersona,
-//           "persona",
-//           "datos"
-//         );
-//         const userSnap = await getDoc(userRef);
-//         const userData = userSnap.exists() ? userSnap.data() : null;
-
-//         postulaciones.push({
-//           id: postDoc.id,
-//           ...postData,
-//           retoId,
-//           datosReto: {
-//             id: retoId,
-//             ...retoData,
-//           },
-//           datosUsuario: {
-//             id: postData.idPersona,
-//             ...userData,
-//           },
-//         });
-//       }
-//     }
-
-//     return postulaciones;
-//   } catch (error) {
-//     console.error("Error al obtener postulaciones:", error);
-//     return [];
-//   }
-// };
-
 export const obtenerPostulacionRetoPorEmpresa = async (
   empresaId,
   estadoFiltrado,
@@ -150,5 +87,18 @@ export const obtenerPostulacionRetoPorEmpresa = async (
   } catch (error) {
     console.error("Error en la escucha de postulaciones:", error);
     return () => {};
+  }
+};
+
+export const editarPostulacionReto = async (retoId, postulacionId, nuevosDatos) => {
+  try {
+    const postulacionRef = doc(db, "retos", retoId, "postulacionReto", postulacionId);
+    await updateDoc(postulacionRef, {
+      ...nuevosDatos,
+      actualizadoEn: serverTimestamp(),
+    });
+    console.log("Postulación actualizada correctamente");
+  } catch (error) {
+    console.error("Error al editar la postulación:", error);
   }
 };

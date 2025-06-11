@@ -91,11 +91,14 @@
                 class="btn btn-sm btn-primary me-1"
                 @click="abrirModal(reto)"
               >
-                Ver participante
+                Ver más
               </button>
-
-              <button class="btn btn-sm btn-primary me-1">Ver reto</button>
-              <button class="btn btn-sm btn-warning">Cambiar estado</button>
+              <button
+                class="btn btn-sm btn-warning"
+                @click="abrirModalEstado(reto)"
+              >
+                Cambiar estado
+              </button>
             </td>
           </tr>
         </tbody>
@@ -109,11 +112,21 @@
     :reto="retoSeleccionado"
     @cerrar="mostrarModal = false"
   />
+
+  <!-- Modal estado -->
+  <CompanyCandidateStatus
+    :visible="mostrarModalEstado"
+    :reto="retoSeleccionado"
+    @cerrar="mostrarModalEstado = false"
+    @guardar="guardarCambioEstado"
+  />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import CompanyCandidateModal from "./CompanyCandidateModal.vue";
+import CompanyCandidateStatus from "./CompanyCandidateStatus.vue";
+import { editarPostulacionReto } from "../../services/candidateServices";
 
 const props = defineProps({
   retos: Object,
@@ -121,11 +134,23 @@ const props = defineProps({
 
 const mostrarModal = ref(false);
 const retoSeleccionado = ref(null);
+const mostrarModalEstado = ref(false);
 
 function abrirModal(reto) {
   retoSeleccionado.value = reto;
   mostrarModal.value = true;
   console.log("Seleccionado:", retoSeleccionado.value);
+}
+
+function abrirModalEstado(reto) {
+  retoSeleccionado.value = reto;
+  mostrarModalEstado.value = true;
+}
+
+function guardarCambioEstado(data) {
+  console.log("Nuevo estado:", data.nuevoEstado);
+  editarPostulacionReto(data.retoId, data.id, { estado: data.nuevoEstado });
+  mostrarModalEstado.value = false;
 }
 
 const formatearFecha = (timestamp) => {
