@@ -30,8 +30,8 @@
               <option value="pendiente">Pendiente</option>
               <option value="aceptado">Aceptado</option>
               <option value="rechazado">Rechazado</option>
-              <option value="proceso">En proceso</option>
-              <option value="revision">En revisión</option>
+              <option value="en proceso">En proceso</option>
+              <option value="en revision">En revisión</option>
             </select>
           </div>
         </div>
